@@ -1,0 +1,22 @@
+﻿
+26.04.2025
+============
+15:20 a 16:20
+18:30 a 19:30
+Creación del nuevo proyecto Compass y creación de la clase Ambiente.cs junto con sus atributos y propiedades.-
+
+
+27.04.2025
+=====
+
+28.04.2025
+==========
+9:30 a 11:00 - Creación de los métodos Ambiente.Actualizar() y Ambiente.Eliminar(). Finalización del método Ambiente.Guardar() que al final se hizo público:
+ahora depende del form llamarlo luego de la creación de un ambiente nuevo. Creación de los métodos privados crearArchivoXML() y borrarArchivoXML()  por 
+refactorización de los métodos Actualizar(Ambiente), Eliminar(Ambiente) y Guardar(Ambiente).-
+
+
+Para continuar
+Creación de los archivos INI necesarios para el ambiente.-
+Cambiar los atributos/métodos por propiedades get/set
+Incluir validaciones
