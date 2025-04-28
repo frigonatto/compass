@@ -114,21 +114,56 @@ namespace compass
 
                 //haz un foreach y por cada uno haz lo que tengas que hacer
                 foreach (XElement a in ambientes)
+                    listaParaDevolver.Add(new Ambiente(a));
+            }
+
+            return listaParaDevolver;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> ObtenerNombres()
+        {
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            string? rutaArchivo = Path.GetDirectoryName(myAssembly.Location);
+            List<string> listaParaDevolver = new List<string>();
+
+            //Se verifica que exista el archivo de sistemas.
+            if (File.Exists(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML))
+            {
+                // se Carga todo el XML en el objeto libro
+                XDocument xmlAmbientes = XDocument.Load(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML);
+                XElement? listaAmbientes = xmlAmbientes.Element("Ambientes");
+                IEnumerable<XElement> ambientes = listaAmbientes.Descendants("Ambiente");
+
+                //haz un foreach y por cada uno haz lo que tengas que hacer
+                foreach (XElement a in ambientes)
                 {
-                    bool axSeguridadIntegrada = System.Convert.ToBoolean(a.Element(C_SEGURIDAD_INTEGRADA).Value.ToString());
-                    Ambiente nuevoAmbiente;
-
-                    if (axSeguridadIntegrada)
-                        nuevoAmbiente = new Ambiente(a.Element(C_NOMBRE).Value.ToString(), a.Element(C_DESCRIPCION).Value.ToString(), a.Element(C_SERVIDOR).Value.ToString(), a.Element(C_BASE_DE_DATOS).Value.ToString());
-                    else
-                        nuevoAmbiente = new Ambiente(a.Element(C_NOMBRE).Value.ToString(), a.Element(C_DESCRIPCION).Value.ToString(), a.Element(C_SERVIDOR).Value.ToString(), a.Element(C_BASE_DE_DATOS).Value.ToString(), a.Element(C_USUARIO).Value.ToString(), a.Element(C_PASSWORD).Value.ToString(), System.Convert.ToBoolean(a.Element(C_ENCRIPTAR_PASSWORD).Value.ToString()));
-
-                    listaParaDevolver.Add(nuevoAmbiente);
+                    listaParaDevolver.Add(a.Element(C_NOMBRE).Value.ToString());
                 }
             }
 
             return listaParaDevolver;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ambienteRecuperado"></param>
+        private Ambiente(XElement ambienteRecuperado)
+        {
+            this.nombre = ambienteRecuperado.Element(C_NOMBRE).Value.ToString();
+            this.descripcion = ambienteRecuperado.Element(C_DESCRIPCION).Value.ToString();
+            this.servidor = ambienteRecuperado.Element(C_SERVIDOR).Value.ToString();
+            this.baseDeDatos = ambienteRecuperado.Element(C_BASE_DE_DATOS).Value.ToString();
+            this.seguridadIntegrada = System.Convert.ToBoolean(ambienteRecuperado.Element(C_SEGURIDAD_INTEGRADA).Value.ToString());
+            this.encriptarPassword = System.Convert.ToBoolean(ambienteRecuperado.Element(C_ENCRIPTAR_PASSWORD).Value.ToString());
+            this.usuario = ambienteRecuperado.Element(C_USUARIO).Value.ToString();
+            this.password = ambienteRecuperado.Element(C_PASSWORD).Value.ToString();
+        }
+
 
         /// <summary>
         /// 
@@ -168,6 +203,27 @@ namespace compass
         /// <param name="nuevaBaseDeDatos"></param>
         public Ambiente(string nuevoNombre, string nuevaDescripcion, string nuevoServidor, string nuevaBaseDeDatos)
         {
+            //Se valida que se ingrese el nombre del ambiente.-
+            if (nuevoNombre.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado el nombre para el nuevo ambiente.-");
+
+            //Se valida que la descripción no quede vacía.-
+            if (nuevaDescripcion.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado la descripción para el nuevo ambiente.-");
+
+            //Se valida el nombre del servidor para el ambiente.-
+            if (nuevoServidor.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado el servidor para el nuevo ambiente.-");
+
+            //Se valida que el nombre de la base de datos esté informado.-
+            if (nuevaBaseDeDatos.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado la base de datos para el nuevo ambiente.-");
+
+            //Se valida que no exista otro ambiente con el mismo nombre.-
+            List<string> nombres =  Ambiente.ObtenerNombres();
+            if (nombres.Contains(nuevoNombre))
+                throw new Exception($"Ya existe un ambiente con el nombre {nuevoNombre}.-");
+
             this.nombre = nuevoNombre;
             this.descripcion = nuevaDescripcion;
             this.servidor = nuevoServidor;
@@ -190,6 +246,35 @@ namespace compass
         /// <param name="nuevaEncriptarPassword"></param>
         public Ambiente(string nuevoNombre, string nuevaDescripcion, string nuevoServidor, string nuevaBaseDeDatos, string nuevoUsuario, string nuevaPassword, bool nuevaEncriptarPassword)
         {
+            //Se valida que se ingrese el nombre del ambiente.-
+            if (nuevoNombre.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado el nombre para el nuevo ambiente.-");
+
+            //Se valida que la descripción no quede vacía.-
+            if (nuevaDescripcion.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado la descripción para el nuevo ambiente.-");
+
+            //Se valida el nombre del servidor para el ambiente.-
+            if (nuevoServidor.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado el servidor para el nuevo ambiente.-");
+
+            //Se valida que el nombre de la base de datos esté informado.-
+            if (nuevaBaseDeDatos.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado la base de datos para el nuevo ambiente.-");
+
+            //Se valida que el usuario se informe.-
+            if (nuevoUsuario.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado el usuario para la conexión con el nuevo ambiente.-");
+
+            //Se valida que se ingrese la contraseña para el usuario.-
+            if (nuevaPassword.Length <= 0)
+                throw new AmbienteNoValidoException("No se ha especificado la contraseña para ingresar al nuevo ambiente.-");
+
+            //Se valida que no exista otro ambiente con el mismo nombre.-
+            List<string> nombres = Ambiente.ObtenerNombres();
+            if (nombres.Contains(nuevoNombre))
+                throw new Exception($"Ya existe un ambiente con el nombre {nuevoNombre}.-");
+
             this.nombre = nuevoNombre;
             this.descripcion = nuevaDescripcion;
             this.servidor = nuevoServidor;

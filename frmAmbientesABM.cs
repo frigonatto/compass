@@ -178,7 +178,6 @@ namespace compass
                 
                 Ambiente.Actualizar(ambienteActual);
 
-
             }
             else
             {
