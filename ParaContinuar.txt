@@ -16,6 +16,15 @@ ahora depende del form llamarlo luego de la creación de un ambiente nuevo. Crea
 refactorización de los métodos Actualizar(Ambiente), Eliminar(Ambiente) y Guardar(Ambiente).-
 
 
+14.05.2025
+=============
+23:00 a 24:00 Generación del archivo INI para la conexión a Base de Datos
+
+
+15.05.2025
+==========
+8:30 a 9:30 - modificación del XML para incluir las bitácoras; diseño del formulario para editar las bitácoras de un ambiente.-
+
 Para continuar
 Creación de los archivos INI necesarios para el ambiente.-
 Cambiar los atributos/métodos por propiedades get/set

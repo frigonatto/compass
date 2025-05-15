@@ -289,9 +289,56 @@ namespace compass
         /// <summary>
         /// 
         /// </summary>
-        public static void GenerarArchivoINI()
+        public void GenerarArchivosINI()
         {
+            StreamWriter sr;
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            string? rutaArchivo = Path.GetDirectoryName(myAssembly.Location);
+            string nombreArchivo = "TrinidadDb.ini";
+            string usr = "#########";
+            string pwd = "#########";
 
+            if (!seguridadIntegrada)
+            {
+                usr = this.Usuario;
+                pwd = this.Password;
+            }
+
+            sr = new StreamWriter($"{rutaArchivo}{Path.DirectorySeparatorChar}{nombreArchivo}");
+            sr.WriteLine("[DbInfo]");
+            sr.WriteLine($"DataSource={this.Servidor}");
+            sr.WriteLine($"Catalog={this.BaseDeDatos}");
+            sr.WriteLine($"IntegratedSecurity={this.SeguridadIntegrada}");
+            sr.WriteLine($"User={usr}");
+            sr.WriteLine($"Pwd={pwd}");
+            sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
+            sr.Close();
+
+
+            //Bitacora
+            nombreArchivo = "Bitacora.ini";
+            sr = new StreamWriter($"{rutaArchivo}{Path.DirectorySeparatorChar}{nombreArchivo}");
+            sr.WriteLine("[TrinidadSeg]");
+            sr.WriteLine($"Almacenamiento=1");
+            sr.WriteLine($"DataSource={this.Servidor}");
+            sr.WriteLine($"Catalog={this.BaseDeDatos}");
+            sr.WriteLine($"Table=BitacoraSeguridad");
+            sr.WriteLine($"IntegratedSecurity={this.SeguridadIntegrada}");
+            sr.WriteLine($"User={usr}");
+            sr.WriteLine($"Pwd={pwd}");
+            sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
+
+            sr.WriteLine("");
+
+            sr.WriteLine("[Questra]");
+            sr.WriteLine($"Almacenamiento=1");
+            sr.WriteLine($"DataSource={this.Servidor}");
+            sr.WriteLine($"Catalog={this.BaseDeDatos}");
+            sr.WriteLine($"Table=BitacoraSeguridad");
+            sr.WriteLine($"IntegratedSecurity={this.SeguridadIntegrada}");
+            sr.WriteLine($"User={usr}");
+            sr.WriteLine($"Pwd={pwd}");
+            sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
         }
 
         /// <summary>
@@ -406,6 +453,10 @@ namespace compass
 
             if (File.Exists(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML))
                 File.Delete(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML);
+        }
+
+        public void CrearArchivoINI()
+        {
         }
     }
 }

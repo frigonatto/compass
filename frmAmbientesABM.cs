@@ -175,7 +175,7 @@ namespace compass
 
                 if (ambienteActual.EncriptarPassword != chkEncriptarPassword.Checked)
                     ambienteActual.EncriptarPassword = chkEncriptarPassword.Checked;
-                
+
                 Ambiente.Actualizar(ambienteActual);
 
             }
@@ -221,6 +221,41 @@ namespace compass
                 txtPassword.Enabled = true;
                 txtUsuarioAmbiente.Enabled = true;
                 chkEncriptarPassword.Enabled = true;
+            }
+        }
+
+        private void btnGenerarINI_Click(object sender, EventArgs e)
+        {
+            if (ambienteActual != null)
+            {
+                try
+                {
+                    ambienteActual.CrearArchivoINI();
+                    MessageBox.Show("Archivo TrinidadDb.ini generado con éxito.-", C_TITULO_MESSAGE_BOX, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, C_TITULO_MESSAGE_BOX, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+        }
+
+        private void chkBitacoras_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void optBitacoraAlmacenamiento1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (optBitacoraAlmacenamiento1.Checked)
+            {
+                fraBitacoraDatosAlmacenamiento1.Visible = true;
+                fraBitacoraDatosAlmacenamiento2.Visible = false;
+            }
+            else
+            {
+                fraBitacoraDatosAlmacenamiento1.Visible = false;
+                fraBitacoraDatosAlmacenamiento2.Visible = true;
             }
         }
     }
