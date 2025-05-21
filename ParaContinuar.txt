@@ -29,3 +29,31 @@ Para continuar
 Creación de los archivos INI necesarios para el ambiente.-
 Cambiar los atributos/métodos por propiedades get/set
 Incluir validaciones
+
+
+
+16.05.2025
+==========
+20:00 a 21:00 - armado de la clase BitacoraBaseDeDatos.cs y finalización de la BitacoraArchivo.cs; escritura del código para verificar si un ambiente 
+tiene (o no) una lista de bitácora y procesarla. Me falta aún llegar a los nodos que continenen los datos y pasarlos al constructor de cada tipo de 
+bitácora
+
+
+20-05-2025
+==========
+12:50 a 17:00 y 23:00 a 24:00
+Armado del formulario para alt / modificaciones de bitacoras. Generación de bitacoras nuevas y comienzo de la modificación del metodo 
+Ambiente.crearArchivoXML(...) para incluir la grabación de las bitácoras
+
+
+21-05-2025
+==========
+8:15 a 10:00 - Finalización de la escritura del XML incluyendo las bitacoras.-
+
+
+Para continuar:
+
+1) Limpiar controles luego de cada alta de bitacora
+2) Generar archivos INI de bitacoras
+3) Leer un archivo que no tenga bien el formato y "contener" las excepciones
+

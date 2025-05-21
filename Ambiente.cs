@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace compass
 {
@@ -29,6 +33,12 @@ namespace compass
 
         private bool encriptarPassword;
 
+        List<BitacoraArchivo>? bitacorasDeArchivo;
+
+        List<BitacoraBaseDeDatos>? bitacorasDeBasesDeDatos;
+
+        List<Bitacora>? misBitacoras;
+
         #endregion
 
         #region propiedades
@@ -41,13 +51,13 @@ namespace compass
         public string Descripcion
         {
             get { return descripcion; }
-            set {  Descripcion = value; }    
+            set {  descripcion = value; }    
         }
 
         public string Servidor
         {
             get { return servidor; }
-            set { Servidor = value; }
+            set { servidor = value; }
         }
 
         public string BaseDeDatos
@@ -80,19 +90,31 @@ namespace compass
             set { encriptarPassword = value; }
         }
 
+        public List<Bitacora> MisBitacoras
+        {
+            get { return misBitacoras ; }
+            set { misBitacoras = value; }
+        }
+
         #endregion
 
-        private const string C_NOMBRE_ARCHIVO_XML = "Ambientes.xml";
         private const string C_AMBIENTE = "Ambiente";
         private const string C_AMBIENTES = "Ambientes";
-        private const string C_NOMBRE = "Nombre";
-        private const string C_DESCRIPCION = "Descripcion";
-        private const string C_SERVIDOR = "Servidor";
         private const string C_BASE_DE_DATOS = "BaseDeDatos";
+        private const string C_DESCRIPCION = "Descripcion";
+        private const string C_ENCRIPTAR_PASSWORD = "EncriptarPassword";
+        private const string C_EXTENSION = "Extension";
+        private const string C_LIMITE = "Limite";
+        private const string C_NOMBRE = "Nombre";
+        private const string C_NOMBRE_ARCHIVO = "NombreArchivo";
+        private const string C_NOMBRE_ARCHIVO_XML = "Ambientes.xml";
         private const string C_SEGURIDAD_INTEGRADA = "SeguridadIntegrada";
+        private const string C_SEPARADOR = "Separador";
+        private const string C_SERVIDOR = "Servidor";
         private const string C_USUARIO = "Usuario";
         private const string C_PASSWORD = "Password";
-        private const string C_ENCRIPTAR_PASSWORD = "EncriptarPassword";
+        private const string C_RUTA = "Ruta";
+        private const string C_TABLA = "Tabla";
 
         /// <summary>
         /// Obtiene la lista de ambientes configurados.-
@@ -107,12 +129,12 @@ namespace compass
             //Se verifica que exista el archivo de sistemas.
             if (File.Exists(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML))
             {
-                // se Carga todo el XML en el objeto libro
+                //Se carga todo el XML en el objeto xmlAmbientes
                 XDocument xmlAmbientes = XDocument.Load(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML);
-                XElement? listaAmbientes = xmlAmbientes.Element("Ambientes");
-                IEnumerable<XElement> ambientes = listaAmbientes.Descendants("Ambiente");
+                XElement? listaAmbientes = xmlAmbientes.Element(C_AMBIENTES);
+                IEnumerable<XElement> ambientes = listaAmbientes.Descendants(C_AMBIENTE);
 
-                //haz un foreach y por cada uno haz lo que tengas que hacer
+                //Se cicla por cada elemento y se cada uno haz lo que tengas que hacer
                 foreach (XElement a in ambientes)
                     listaParaDevolver.Add(new Ambiente(a));
             }
@@ -162,8 +184,53 @@ namespace compass
             this.encriptarPassword = System.Convert.ToBoolean(ambienteRecuperado.Element(C_ENCRIPTAR_PASSWORD).Value.ToString());
             this.usuario = ambienteRecuperado.Element(C_USUARIO).Value.ToString();
             this.password = ambienteRecuperado.Element(C_PASSWORD).Value.ToString();
-        }
 
+            this.bitacorasDeArchivo = new List<BitacoraArchivo>();
+            this.bitacorasDeBasesDeDatos = new List<BitacoraBaseDeDatos>();
+            this.misBitacoras = new List<Bitacora>(); 
+
+            IEnumerable<XElement> bitacoras = ambienteRecuperado.Descendants("Bitacoras");
+            if (bitacoras != null)
+            {
+                IEnumerable<XElement> bitacora = bitacoras.Descendants("Bitacora");
+                foreach (XElement x in bitacora)
+                {
+                    if (x.Element("Almacenamiento").Value.ToString() == "1")
+                    {
+                        BitacoraBaseDeDatos bit_base = new BitacoraBaseDeDatos
+                        {
+                            Almacenamiento = 1,
+                            Nombre = x.Element(C_NOMBRE).Value.ToString(),
+                            Servidor = x.Element(C_SERVIDOR).Value.ToString(),
+                            BaseDeDatos = x.Element(C_BASE_DE_DATOS).Value.ToString(),
+                            Tabla = x.Element(C_TABLA).Value.ToString(),
+                            SeguridadIntegrada = System.Convert.ToBoolean(x.Element(C_SEGURIDAD_INTEGRADA).Value),
+                            Usuario = x.Element(C_USUARIO).Value.ToString(),
+                            Password = x.Element(C_PASSWORD).Value.ToString(),
+                            EncriptarPassword = System.Convert.ToBoolean(x.Element(C_ENCRIPTAR_PASSWORD).Value)
+                        };
+
+                        misBitacoras.Add(bit_base);
+                    }
+
+                    if (x.Element("Almacenamiento").Value.ToString() == "2")
+                    {
+                        BitacoraArchivo bit_archivo = new BitacoraArchivo
+                        {
+                            Almacenamiento = 2,
+                            Nombre = x.Element("Nombre").Value.ToString(),
+                            Ruta = x.Element("Ruta").Value.ToString(),
+                            NombreArchivo = x.Element(C_NOMBRE_ARCHIVO).Value.ToString(),
+                            Extension = x.Element(C_EXTENSION).Value.ToString(),
+                            Separador = x.Element(C_SEPARADOR).Value.ToString(),
+                            Limite = System.Convert.ToInt32(x.Element(C_LIMITE).Value),
+                        };
+
+                        misBitacoras.Add(bit_archivo);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 
@@ -284,7 +351,6 @@ namespace compass
             this.password = nuevaPassword;
             this.encriptarPassword = nuevaEncriptarPassword;
         }
-
 
         /// <summary>
         /// 
@@ -428,7 +494,7 @@ namespace compass
                 XmlText texto_SeguridadIntegrada = doc.CreateTextNode(a.SeguridadIntegrada.ToString());
                 XmlText texto_Usuario = doc.CreateTextNode(a.Usuario);
                 XmlText texto_Password = doc.CreateTextNode(a.Password);
-                XmlText texto_EncriptarPassword = doc.CreateTextNode(a.encriptarPassword.ToString());
+                XmlText texto_EncriptarPassword = doc.CreateTextNode(a.EncriptarPassword.ToString());
 
                 nombre.AppendChild(texto_Nombre);
                 descripcion.AppendChild(texto_Descripcion);
@@ -438,6 +504,97 @@ namespace compass
                 usuario.AppendChild(texto_Usuario);
                 password.AppendChild(texto_Password);
                 encriptarPassword.AppendChild(texto_EncriptarPassword);
+
+
+                //bitacoras
+                if (a.MisBitacoras != null)
+                {
+                    XmlElement coleccionDeBitacoras = doc.CreateElement("", "Bitacoras", "");
+
+                    foreach (Bitacora b in a.misBitacoras)
+                    {
+                        XmlElement unaBitacora = doc.CreateElement("", "Bitacora", "");
+                        
+                        XmlElement almacenamientoBitacora = doc.CreateElement("", "Almacenamiento", "");
+                        XmlElement nombreBitacora = doc.CreateElement("", "Nombre", "");
+
+                        XmlText texto_almacenamientoBitacora = doc.CreateTextNode(b.Almacenamiento.ToString());
+                        XmlText texto_nombreBitacora = doc.CreateTextNode(b.Nombre);
+
+                        almacenamientoBitacora.AppendChild(texto_almacenamientoBitacora);
+                        nombreBitacora.AppendChild(texto_nombreBitacora);
+
+                        unaBitacora.AppendChild(almacenamientoBitacora);
+                        unaBitacora.AppendChild(nombreBitacora);
+
+                        if (b.Almacenamiento == 1)
+                        {
+                            BitacoraBaseDeDatos bitacoraAuxiliar = (BitacoraBaseDeDatos) b;
+                            XmlElement bitacoraServidor = doc.CreateElement("", C_SERVIDOR, "");
+                            XmlElement bitacoraBaseDeDatos = doc.CreateElement("", C_BASE_DE_DATOS, "");
+                            XmlElement bitacoraTabla = doc.CreateElement("", C_TABLA, "");
+                            XmlElement bitacoraSeguridadIntegrada = doc.CreateElement("", C_SEGURIDAD_INTEGRADA, "");
+                            XmlElement bitacoraUsuario = doc.CreateElement("", C_USUARIO, "");
+                            XmlElement bitacoraPassword = doc.CreateElement("", C_PASSWORD, "");
+                            XmlElement bitacoraEncriptarPassword = doc.CreateElement("", C_ENCRIPTAR_PASSWORD, "");
+
+                            XmlText texto_bitacoraServidor = doc.CreateTextNode(bitacoraAuxiliar.Servidor);
+                            XmlText texto_bitacoraBaseDeDatos = doc.CreateTextNode(bitacoraAuxiliar.BaseDeDatos);
+                            XmlText texto_bitacoraTabla = doc.CreateTextNode(bitacoraAuxiliar.Tabla);
+                            XmlText texto_bitacoraSeguridadIntegrada = doc.CreateTextNode(bitacoraAuxiliar.SeguridadIntegrada.ToString());
+                            XmlText texto_bitacoraUsuario = doc.CreateTextNode(bitacoraAuxiliar.Usuario);
+                            XmlText texto_bitacoraPassword = doc.CreateTextNode(bitacoraAuxiliar.Password);
+                            XmlText texto_bitacoraEncriptarPassword = doc.CreateTextNode(bitacoraAuxiliar.EncriptarPassword.ToString());
+
+                            bitacoraServidor.AppendChild(texto_bitacoraServidor);
+                            bitacoraBaseDeDatos.AppendChild(texto_bitacoraBaseDeDatos);
+                            bitacoraTabla.AppendChild(texto_bitacoraTabla);
+                            bitacoraSeguridadIntegrada.AppendChild(texto_bitacoraSeguridadIntegrada);
+                            bitacoraUsuario.AppendChild(texto_bitacoraUsuario);
+                            bitacoraPassword.AppendChild(texto_bitacoraPassword);
+                            bitacoraEncriptarPassword.AppendChild(texto_bitacoraEncriptarPassword);
+
+                            unaBitacora.AppendChild(bitacoraServidor);
+                            unaBitacora.AppendChild(bitacoraBaseDeDatos);
+                            unaBitacora.AppendChild(bitacoraTabla);
+                            unaBitacora.AppendChild(bitacoraSeguridadIntegrada);
+                            unaBitacora.AppendChild(bitacoraUsuario);
+                            unaBitacora.AppendChild(bitacoraPassword);
+                            unaBitacora.AppendChild(bitacoraEncriptarPassword);
+                        }
+                        else
+                        {
+                            BitacoraArchivo bitacoraAuxiliar = (BitacoraArchivo)b;
+                            XmlElement bitacoraRuta = doc.CreateElement("", C_RUTA, "");
+                            XmlElement bitacoraNombreArchivo = doc.CreateElement("", C_NOMBRE_ARCHIVO, "");
+                            XmlElement bitacoraExtension = doc.CreateElement("", C_EXTENSION, "");
+                            XmlElement bitacoraSeparador = doc.CreateElement("", C_SEPARADOR, "");
+                            XmlElement bitacoraLimite = doc.CreateElement("", C_LIMITE, "");
+
+                            XmlText texto_bitacoraRuta = doc.CreateTextNode(bitacoraAuxiliar.Ruta);
+                            XmlText texto_bitacoraNombreArchivo = doc.CreateTextNode(bitacoraAuxiliar.NombreArchivo);
+                            XmlText texto_bitacoraExtension = doc.CreateTextNode(bitacoraAuxiliar.Extension);
+                            XmlText texto_bitacoraSeparador = doc.CreateTextNode(bitacoraAuxiliar.Separador);
+                            XmlText texto_bitacoraLimite = doc.CreateTextNode(bitacoraAuxiliar.Limite.ToString());
+
+                            bitacoraRuta.AppendChild(texto_bitacoraRuta);
+                            bitacoraNombreArchivo.AppendChild(texto_bitacoraNombreArchivo);
+                            bitacoraExtension.AppendChild(texto_bitacoraExtension);
+                            bitacoraSeparador.AppendChild(texto_bitacoraSeparador);
+                            bitacoraLimite.AppendChild(texto_bitacoraLimite);
+
+                            unaBitacora.AppendChild(bitacoraRuta);
+                            unaBitacora.AppendChild(bitacoraNombreArchivo);
+                            unaBitacora.AppendChild(bitacoraExtension);
+                            unaBitacora.AppendChild(bitacoraSeparador);
+                            unaBitacora.AppendChild(bitacoraLimite);
+                        }
+
+                        coleccionDeBitacoras.AppendChild(unaBitacora);
+                    }
+
+                    ambiente.AppendChild(coleccionDeBitacoras);
+                }
             }
 
             doc.Save(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML);
@@ -453,10 +610,6 @@ namespace compass
 
             if (File.Exists(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML))
                 File.Delete(rutaArchivo + Path.DirectorySeparatorChar + C_NOMBRE_ARCHIVO_XML);
-        }
-
-        public void CrearArchivoINI()
-        {
         }
     }
 }
