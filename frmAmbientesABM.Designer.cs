@@ -64,13 +64,6 @@
             btnBitacoraEliminar = new Button();
             btnBitacoraCancelar = new Button();
             btnBitacoraAceptar = new Button();
-            fraBitacoraDatosAlmacenamiento2 = new GroupBox();
-            txtBitacoraSeparador = new TextBox();
-            label13 = new Label();
-            label12 = new Label();
-            nudBitacoraLimiteMB = new NumericUpDown();
-            label11 = new Label();
-            txtBitacoraExtension = new TextBox();
             fraBitacoraDatosAlmacenamiento1 = new GroupBox();
             txtBitacoraTabla = new TextBox();
             txtBitacoraBaseDeDatos = new TextBox();
@@ -84,6 +77,13 @@
             label16 = new Label();
             label15 = new Label();
             label14 = new Label();
+            fraBitacoraDatosAlmacenamiento2 = new GroupBox();
+            txtBitacoraSeparador = new TextBox();
+            label13 = new Label();
+            label12 = new Label();
+            nudBitacoraLimiteMB = new NumericUpDown();
+            label11 = new Label();
+            txtBitacoraExtension = new TextBox();
             label10 = new Label();
             txtBitacoraNombreArchivo = new TextBox();
             label9 = new Label();
@@ -99,9 +99,9 @@
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             groupBox1.SuspendLayout();
+            fraBitacoraDatosAlmacenamiento1.SuspendLayout();
             fraBitacoraDatosAlmacenamiento2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudBitacoraLimiteMB).BeginInit();
-            fraBitacoraDatosAlmacenamiento1.SuspendLayout();
             fraBitacoraAlmacenamiento.SuspendLayout();
             SuspendLayout();
             // 
@@ -111,7 +111,7 @@
             statusStrip1.Location = new Point(0, 461);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Size = new Size(950, 24);
-            statusStrip1.TabIndex = 0;
+            statusStrip1.TabIndex = 5;
             statusStrip1.Text = "statusStrip1";
             // 
             // tslCantidadDeRegistros
@@ -167,7 +167,7 @@
             lstAmbientes.Location = new Point(0, 0);
             lstAmbientes.Name = "lstAmbientes";
             lstAmbientes.Size = new Size(273, 461);
-            lstAmbientes.TabIndex = 1;
+            lstAmbientes.TabIndex = 0;
             lstAmbientes.SelectedIndexChanged += lstAmbientes_SelectedIndexChanged;
             // 
             // label1
@@ -176,7 +176,7 @@
             label1.Location = new Point(22, 23);
             label1.Name = "label1";
             label1.Size = new Size(51, 15);
-            label1.TabIndex = 2;
+            label1.TabIndex = 0;
             label1.Text = "Nombre";
             // 
             // txtNombreAmbiente
@@ -184,7 +184,7 @@
             txtNombreAmbiente.Location = new Point(79, 20);
             txtNombreAmbiente.Name = "txtNombreAmbiente";
             txtNombreAmbiente.Size = new Size(100, 23);
-            txtNombreAmbiente.TabIndex = 3;
+            txtNombreAmbiente.TabIndex = 1;
             // 
             // label2
             // 
@@ -192,7 +192,7 @@
             label2.Location = new Point(206, 23);
             label2.Name = "label2";
             label2.Size = new Size(72, 15);
-            label2.TabIndex = 4;
+            label2.TabIndex = 2;
             label2.Text = "Descripción:";
             // 
             // txtDescripcionAmbiente
@@ -200,14 +200,14 @@
             txtDescripcionAmbiente.Location = new Point(284, 20);
             txtDescripcionAmbiente.Name = "txtDescripcionAmbiente";
             txtDescripcionAmbiente.Size = new Size(339, 23);
-            txtDescripcionAmbiente.TabIndex = 5;
+            txtDescripcionAmbiente.TabIndex = 3;
             // 
             // btnAceptar
             // 
             btnAceptar.Location = new Point(279, 415);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(75, 34);
-            btnAceptar.TabIndex = 6;
+            btnAceptar.TabIndex = 2;
             btnAceptar.Text = "Aceptar";
             btnAceptar.UseVisualStyleBackColor = true;
             btnAceptar.Click += btnAceptar_Click;
@@ -217,7 +217,7 @@
             btnCancelar.Location = new Point(580, 415);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(75, 34);
-            btnCancelar.TabIndex = 7;
+            btnCancelar.TabIndex = 3;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             btnCancelar.Click += btnCancelar_Click;
@@ -228,7 +228,7 @@
             label3.Location = new Point(22, 70);
             label3.Name = "label3";
             label3.Size = new Size(53, 15);
-            label3.TabIndex = 8;
+            label3.TabIndex = 4;
             label3.Text = "Servidor:";
             // 
             // txtServidorAmbiente
@@ -236,7 +236,7 @@
             txtServidorAmbiente.Location = new Point(81, 67);
             txtServidorAmbiente.Name = "txtServidorAmbiente";
             txtServidorAmbiente.Size = new Size(257, 23);
-            txtServidorAmbiente.TabIndex = 9;
+            txtServidorAmbiente.TabIndex = 5;
             // 
             // label4
             // 
@@ -244,7 +244,7 @@
             label4.Location = new Point(382, 70);
             label4.Name = "label4";
             label4.Size = new Size(84, 15);
-            label4.TabIndex = 10;
+            label4.TabIndex = 6;
             label4.Text = "Base De Datos:";
             // 
             // txtBaseDeDatosAmbiente
@@ -252,7 +252,7 @@
             txtBaseDeDatosAmbiente.Location = new Point(472, 67);
             txtBaseDeDatosAmbiente.Name = "txtBaseDeDatosAmbiente";
             txtBaseDeDatosAmbiente.Size = new Size(132, 23);
-            txtBaseDeDatosAmbiente.TabIndex = 11;
+            txtBaseDeDatosAmbiente.TabIndex = 7;
             // 
             // chkSeguridadIntegrada
             // 
@@ -260,7 +260,7 @@
             chkSeguridadIntegrada.Location = new Point(22, 118);
             chkSeguridadIntegrada.Name = "chkSeguridadIntegrada";
             chkSeguridadIntegrada.Size = new Size(132, 19);
-            chkSeguridadIntegrada.TabIndex = 12;
+            chkSeguridadIntegrada.TabIndex = 8;
             chkSeguridadIntegrada.Text = "Seguridad Integrada";
             chkSeguridadIntegrada.UseVisualStyleBackColor = true;
             chkSeguridadIntegrada.CheckedChanged += chkSeguridadIntegrada_CheckedChanged;
@@ -271,7 +271,7 @@
             label5.Location = new Point(227, 119);
             label5.Name = "label5";
             label5.Size = new Size(50, 15);
-            label5.TabIndex = 13;
+            label5.TabIndex = 9;
             label5.Text = "Usuario:";
             // 
             // txtUsuarioAmbiente
@@ -279,7 +279,7 @@
             txtUsuarioAmbiente.Location = new Point(283, 116);
             txtUsuarioAmbiente.Name = "txtUsuarioAmbiente";
             txtUsuarioAmbiente.Size = new Size(130, 23);
-            txtUsuarioAmbiente.TabIndex = 14;
+            txtUsuarioAmbiente.TabIndex = 10;
             // 
             // label6
             // 
@@ -287,7 +287,7 @@
             label6.Location = new Point(204, 156);
             label6.Name = "label6";
             label6.Size = new Size(70, 15);
-            label6.TabIndex = 15;
+            label6.TabIndex = 11;
             label6.Text = "Contraseña:";
             // 
             // txtPassword
@@ -295,7 +295,7 @@
             txtPassword.Location = new Point(283, 153);
             txtPassword.Name = "txtPassword";
             txtPassword.Size = new Size(130, 23);
-            txtPassword.TabIndex = 16;
+            txtPassword.TabIndex = 12;
             // 
             // chkEncriptarPassword
             // 
@@ -303,7 +303,7 @@
             chkEncriptarPassword.Location = new Point(433, 155);
             chkEncriptarPassword.Name = "chkEncriptarPassword";
             chkEncriptarPassword.Size = new Size(136, 19);
-            chkEncriptarPassword.TabIndex = 17;
+            chkEncriptarPassword.TabIndex = 13;
             chkEncriptarPassword.Text = "Encriptar Contraseña";
             chkEncriptarPassword.UseVisualStyleBackColor = true;
             // 
@@ -312,7 +312,7 @@
             btnEliminar.Location = new Point(863, 415);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(75, 34);
-            btnEliminar.TabIndex = 18;
+            btnEliminar.TabIndex = 4;
             btnEliminar.Text = "&Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
@@ -322,7 +322,7 @@
             btnGenerarINI.Location = new Point(22, 224);
             btnGenerarINI.Name = "btnGenerarINI";
             btnGenerarINI.Size = new Size(141, 23);
-            btnGenerarINI.TabIndex = 19;
+            btnGenerarINI.TabIndex = 14;
             btnGenerarINI.Text = "Generar Archivos INI";
             btnGenerarINI.UseVisualStyleBackColor = true;
             btnGenerarINI.Click += btnGenerarINI_Click;
@@ -335,7 +335,7 @@
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(665, 397);
-            tabControl1.TabIndex = 22;
+            tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
@@ -365,12 +365,12 @@
             // tabPage2
             // 
             tabPage2.Controls.Add(lblBitacoraModo);
+            tabPage2.Controls.Add(fraBitacoraDatosAlmacenamiento1);
             tabPage2.Controls.Add(groupBox1);
             tabPage2.Controls.Add(btnBitacoraNueva);
             tabPage2.Controls.Add(btnBitacoraEliminar);
             tabPage2.Controls.Add(btnBitacoraCancelar);
             tabPage2.Controls.Add(btnBitacoraAceptar);
-            tabPage2.Controls.Add(fraBitacoraDatosAlmacenamiento1);
             tabPage2.Controls.Add(fraBitacoraDatosAlmacenamiento2);
             tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(fraBitacoraAlmacenamiento);
@@ -390,7 +390,7 @@
             lblBitacoraModo.Location = new Point(455, 25);
             lblBitacoraModo.Name = "lblBitacoraModo";
             lblBitacoraModo.Size = new Size(100, 23);
-            lblBitacoraModo.TabIndex = 31;
+            lblBitacoraModo.TabIndex = 2;
             lblBitacoraModo.Text = "label13";
             lblBitacoraModo.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -400,7 +400,7 @@
             groupBox1.Location = new Point(16, 66);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(237, 57);
-            groupBox1.TabIndex = 30;
+            groupBox1.TabIndex = 3;
             groupBox1.TabStop = false;
             groupBox1.Text = "Nombre:";
             // 
@@ -416,7 +416,7 @@
             btnBitacoraNueva.Location = new Point(567, 12);
             btnBitacoraNueva.Name = "btnBitacoraNueva";
             btnBitacoraNueva.Size = new Size(75, 23);
-            btnBitacoraNueva.TabIndex = 29;
+            btnBitacoraNueva.TabIndex = 7;
             btnBitacoraNueva.Text = "Nueva Bitácora....";
             btnBitacoraNueva.UseVisualStyleBackColor = true;
             btnBitacoraNueva.Click += btnBitacoraNueva_Click;
@@ -426,7 +426,7 @@
             btnBitacoraEliminar.Location = new Point(567, 71);
             btnBitacoraEliminar.Name = "btnBitacoraEliminar";
             btnBitacoraEliminar.Size = new Size(75, 23);
-            btnBitacoraEliminar.TabIndex = 28;
+            btnBitacoraEliminar.TabIndex = 9;
             btnBitacoraEliminar.Text = "Eliminar";
             btnBitacoraEliminar.UseVisualStyleBackColor = true;
             // 
@@ -435,7 +435,7 @@
             btnBitacoraCancelar.Location = new Point(567, 100);
             btnBitacoraCancelar.Name = "btnBitacoraCancelar";
             btnBitacoraCancelar.Size = new Size(75, 23);
-            btnBitacoraCancelar.TabIndex = 27;
+            btnBitacoraCancelar.TabIndex = 10;
             btnBitacoraCancelar.Text = "Cancelar";
             btnBitacoraCancelar.UseVisualStyleBackColor = true;
             btnBitacoraCancelar.Click += btnBitacoraCancelar_Click;
@@ -445,83 +445,10 @@
             btnBitacoraAceptar.Location = new Point(567, 42);
             btnBitacoraAceptar.Name = "btnBitacoraAceptar";
             btnBitacoraAceptar.Size = new Size(75, 23);
-            btnBitacoraAceptar.TabIndex = 26;
+            btnBitacoraAceptar.TabIndex = 8;
             btnBitacoraAceptar.Text = "Aceptar";
             btnBitacoraAceptar.UseVisualStyleBackColor = true;
             btnBitacoraAceptar.Click += btnBitacoraAceptar_Click;
-            // 
-            // fraBitacoraDatosAlmacenamiento2
-            // 
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraSeparador);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label13);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label12);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(nudBitacoraLimiteMB);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label11);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraExtension);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label10);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraNombreArchivo);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label9);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraRuta);
-            fraBitacoraDatosAlmacenamiento2.Controls.Add(label8);
-            fraBitacoraDatosAlmacenamiento2.Location = new Point(16, 129);
-            fraBitacoraDatosAlmacenamiento2.Name = "fraBitacoraDatosAlmacenamiento2";
-            fraBitacoraDatosAlmacenamiento2.Size = new Size(580, 213);
-            fraBitacoraDatosAlmacenamiento2.TabIndex = 24;
-            fraBitacoraDatosAlmacenamiento2.TabStop = false;
-            fraBitacoraDatosAlmacenamiento2.Text = "Configuración de archivos";
-            // 
-            // txtBitacoraSeparador
-            // 
-            txtBitacoraSeparador.Location = new Point(242, 119);
-            txtBitacoraSeparador.MaxLength = 1;
-            txtBitacoraSeparador.Name = "txtBitacoraSeparador";
-            txtBitacoraSeparador.Size = new Size(35, 23);
-            txtBitacoraSeparador.TabIndex = 10;
-            txtBitacoraSeparador.TextAlign = HorizontalAlignment.Right;
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(173, 122);
-            label13.Name = "label13";
-            label13.Size = new Size(63, 15);
-            label13.TabIndex = 9;
-            label13.Text = "Separador:";
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.ForeColor = Color.BlueViolet;
-            label12.Location = new Point(419, 122);
-            label12.Name = "label12";
-            label12.Size = new Size(26, 15);
-            label12.TabIndex = 8;
-            label12.Text = "MB";
-            // 
-            // nudBitacoraLimiteMB
-            // 
-            nudBitacoraLimiteMB.Location = new Point(359, 119);
-            nudBitacoraLimiteMB.Name = "nudBitacoraLimiteMB";
-            nudBitacoraLimiteMB.Size = new Size(53, 23);
-            nudBitacoraLimiteMB.TabIndex = 7;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new Point(310, 122);
-            label11.Name = "label11";
-            label11.Size = new Size(43, 15);
-            label11.TabIndex = 6;
-            label11.Text = "Límite:";
-            // 
-            // txtBitacoraExtension
-            // 
-            txtBitacoraExtension.Location = new Point(86, 118);
-            txtBitacoraExtension.MaxLength = 5;
-            txtBitacoraExtension.Name = "txtBitacoraExtension";
-            txtBitacoraExtension.Size = new Size(61, 23);
-            txtBitacoraExtension.TabIndex = 5;
             // 
             // fraBitacoraDatosAlmacenamiento1
             // 
@@ -540,7 +467,7 @@
             fraBitacoraDatosAlmacenamiento1.Location = new Point(602, 129);
             fraBitacoraDatosAlmacenamiento1.Name = "fraBitacoraDatosAlmacenamiento1";
             fraBitacoraDatosAlmacenamiento1.Size = new Size(580, 213);
-            fraBitacoraDatosAlmacenamiento1.TabIndex = 25;
+            fraBitacoraDatosAlmacenamiento1.TabIndex = 6;
             fraBitacoraDatosAlmacenamiento1.TabStop = false;
             fraBitacoraDatosAlmacenamiento1.Text = "Configuración de Base de Datos";
             // 
@@ -549,35 +476,35 @@
             txtBitacoraTabla.Location = new Point(386, 69);
             txtBitacoraTabla.Name = "txtBitacoraTabla";
             txtBitacoraTabla.Size = new Size(159, 23);
-            txtBitacoraTabla.TabIndex = 11;
+            txtBitacoraTabla.TabIndex = 5;
             // 
             // txtBitacoraBaseDeDatos
             // 
             txtBitacoraBaseDeDatos.Location = new Point(103, 67);
             txtBitacoraBaseDeDatos.Name = "txtBitacoraBaseDeDatos";
             txtBitacoraBaseDeDatos.Size = new Size(159, 23);
-            txtBitacoraBaseDeDatos.TabIndex = 10;
+            txtBitacoraBaseDeDatos.TabIndex = 3;
             // 
             // txtBitacoraServidor
             // 
             txtBitacoraServidor.Location = new Point(72, 31);
             txtBitacoraServidor.Name = "txtBitacoraServidor";
-            txtBitacoraServidor.Size = new Size(159, 23);
-            txtBitacoraServidor.TabIndex = 9;
+            txtBitacoraServidor.Size = new Size(257, 23);
+            txtBitacoraServidor.TabIndex = 1;
             // 
             // txtBitacoraPassword
             // 
             txtBitacoraPassword.Location = new Point(95, 172);
             txtBitacoraPassword.Name = "txtBitacoraPassword";
             txtBitacoraPassword.Size = new Size(100, 23);
-            txtBitacoraPassword.TabIndex = 8;
+            txtBitacoraPassword.TabIndex = 10;
             // 
             // txtBitacoraUsuario
             // 
             txtBitacoraUsuario.Location = new Point(72, 141);
             txtBitacoraUsuario.Name = "txtBitacoraUsuario";
             txtBitacoraUsuario.Size = new Size(100, 23);
-            txtBitacoraUsuario.TabIndex = 7;
+            txtBitacoraUsuario.TabIndex = 8;
             // 
             // chkBitacoraEncriptarPassword
             // 
@@ -585,7 +512,7 @@
             chkBitacoraEncriptarPassword.Location = new Point(246, 174);
             chkBitacoraEncriptarPassword.Name = "chkBitacoraEncriptarPassword";
             chkBitacoraEncriptarPassword.Size = new Size(126, 19);
-            chkBitacoraEncriptarPassword.TabIndex = 6;
+            chkBitacoraEncriptarPassword.TabIndex = 11;
             chkBitacoraEncriptarPassword.Text = "Encriptar Password";
             chkBitacoraEncriptarPassword.UseVisualStyleBackColor = true;
             // 
@@ -595,7 +522,7 @@
             label18.Location = new Point(19, 177);
             label18.Name = "label18";
             label18.Size = new Size(70, 15);
-            label18.TabIndex = 5;
+            label18.TabIndex = 9;
             label18.Text = "Contraseña:";
             // 
             // label17
@@ -604,7 +531,7 @@
             label17.Location = new Point(19, 144);
             label17.Name = "label17";
             label17.Size = new Size(50, 15);
-            label17.TabIndex = 4;
+            label17.TabIndex = 7;
             label17.Text = "Usuario:";
             // 
             // chkBitacoraSeguridadIntegrada
@@ -613,9 +540,10 @@
             chkBitacoraSeguridadIntegrada.Location = new Point(15, 111);
             chkBitacoraSeguridadIntegrada.Name = "chkBitacoraSeguridadIntegrada";
             chkBitacoraSeguridadIntegrada.Size = new Size(135, 19);
-            chkBitacoraSeguridadIntegrada.TabIndex = 3;
+            chkBitacoraSeguridadIntegrada.TabIndex = 6;
             chkBitacoraSeguridadIntegrada.Text = "Seguridad Integrada:";
             chkBitacoraSeguridadIntegrada.UseVisualStyleBackColor = true;
+            chkBitacoraSeguridadIntegrada.CheckedChanged += chkBitacoraSeguridadIntegrada_CheckedChanged;
             // 
             // label16
             // 
@@ -623,7 +551,7 @@
             label16.Location = new Point(343, 72);
             label16.Name = "label16";
             label16.Size = new Size(37, 15);
-            label16.TabIndex = 2;
+            label16.TabIndex = 4;
             label16.Text = "Tabla:";
             // 
             // label15
@@ -632,7 +560,7 @@
             label15.Location = new Point(13, 72);
             label15.Name = "label15";
             label15.Size = new Size(84, 15);
-            label15.TabIndex = 1;
+            label15.TabIndex = 2;
             label15.Text = "Base De Datos:";
             // 
             // label14
@@ -643,6 +571,79 @@
             label14.Size = new Size(53, 15);
             label14.TabIndex = 0;
             label14.Text = "Servidor:";
+            // 
+            // fraBitacoraDatosAlmacenamiento2
+            // 
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraSeparador);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label13);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label12);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(nudBitacoraLimiteMB);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label11);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraExtension);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label10);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraNombreArchivo);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label9);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(txtBitacoraRuta);
+            fraBitacoraDatosAlmacenamiento2.Controls.Add(label8);
+            fraBitacoraDatosAlmacenamiento2.Location = new Point(16, 129);
+            fraBitacoraDatosAlmacenamiento2.Name = "fraBitacoraDatosAlmacenamiento2";
+            fraBitacoraDatosAlmacenamiento2.Size = new Size(580, 213);
+            fraBitacoraDatosAlmacenamiento2.TabIndex = 5;
+            fraBitacoraDatosAlmacenamiento2.TabStop = false;
+            fraBitacoraDatosAlmacenamiento2.Text = "Configuración de archivos";
+            // 
+            // txtBitacoraSeparador
+            // 
+            txtBitacoraSeparador.Location = new Point(242, 119);
+            txtBitacoraSeparador.MaxLength = 1;
+            txtBitacoraSeparador.Name = "txtBitacoraSeparador";
+            txtBitacoraSeparador.Size = new Size(35, 23);
+            txtBitacoraSeparador.TabIndex = 7;
+            txtBitacoraSeparador.TextAlign = HorizontalAlignment.Center;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(173, 122);
+            label13.Name = "label13";
+            label13.Size = new Size(63, 15);
+            label13.TabIndex = 6;
+            label13.Text = "Separador:";
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label12.ForeColor = Color.BlueViolet;
+            label12.Location = new Point(419, 122);
+            label12.Name = "label12";
+            label12.Size = new Size(26, 15);
+            label12.TabIndex = 10;
+            label12.Text = "MB";
+            // 
+            // nudBitacoraLimiteMB
+            // 
+            nudBitacoraLimiteMB.Location = new Point(359, 119);
+            nudBitacoraLimiteMB.Name = "nudBitacoraLimiteMB";
+            nudBitacoraLimiteMB.Size = new Size(53, 23);
+            nudBitacoraLimiteMB.TabIndex = 9;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(310, 122);
+            label11.Name = "label11";
+            label11.Size = new Size(43, 15);
+            label11.TabIndex = 8;
+            label11.Text = "Límite:";
+            // 
+            // txtBitacoraExtension
+            // 
+            txtBitacoraExtension.Location = new Point(86, 118);
+            txtBitacoraExtension.MaxLength = 5;
+            txtBitacoraExtension.Name = "txtBitacoraExtension";
+            txtBitacoraExtension.Size = new Size(61, 23);
+            txtBitacoraExtension.TabIndex = 5;
             // 
             // label10
             // 
@@ -691,7 +692,7 @@
             label7.Location = new Point(16, 29);
             label7.Name = "label7";
             label7.Size = new Size(121, 15);
-            label7.TabIndex = 23;
+            label7.TabIndex = 0;
             label7.Text = "Bitacoras Registradas:";
             // 
             // fraBitacoraAlmacenamiento
@@ -701,7 +702,7 @@
             fraBitacoraAlmacenamiento.Location = new Point(375, 66);
             fraBitacoraAlmacenamiento.Name = "fraBitacoraAlmacenamiento";
             fraBitacoraAlmacenamiento.Size = new Size(186, 57);
-            fraBitacoraAlmacenamiento.TabIndex = 22;
+            fraBitacoraAlmacenamiento.TabIndex = 4;
             fraBitacoraAlmacenamiento.TabStop = false;
             fraBitacoraAlmacenamiento.Text = "Almacenamiento";
             // 
@@ -736,7 +737,8 @@
             cmbBitacorasRegistradas.Location = new Point(143, 26);
             cmbBitacorasRegistradas.Name = "cmbBitacorasRegistradas";
             cmbBitacorasRegistradas.Size = new Size(306, 23);
-            cmbBitacorasRegistradas.TabIndex = 0;
+            cmbBitacorasRegistradas.Sorted = true;
+            cmbBitacorasRegistradas.TabIndex = 1;
             cmbBitacorasRegistradas.SelectedIndexChanged += cmbBitacorasRegistradas_SelectedIndexChanged;
             // 
             // frmAmbientesABM
@@ -765,11 +767,11 @@
             tabPage2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            fraBitacoraDatosAlmacenamiento1.ResumeLayout(false);
+            fraBitacoraDatosAlmacenamiento1.PerformLayout();
             fraBitacoraDatosAlmacenamiento2.ResumeLayout(false);
             fraBitacoraDatosAlmacenamiento2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudBitacoraLimiteMB).EndInit();
-            fraBitacoraDatosAlmacenamiento1.ResumeLayout(false);
-            fraBitacoraDatosAlmacenamiento1.PerformLayout();
             fraBitacoraAlmacenamiento.ResumeLayout(false);
             fraBitacoraAlmacenamiento.PerformLayout();
             ResumeLayout(false);

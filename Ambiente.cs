@@ -98,6 +98,9 @@ namespace compass
 
         #endregion
 
+        #region constantes
+
+        private const string C_ALMACENAMIENTO = "Almacenamiento";
         private const string C_AMBIENTE = "Ambiente";
         private const string C_AMBIENTES = "Ambientes";
         private const string C_BASE_DE_DATOS = "BaseDeDatos";
@@ -115,6 +118,10 @@ namespace compass
         private const string C_PASSWORD = "Password";
         private const string C_RUTA = "Ruta";
         private const string C_TABLA = "Tabla";
+        private const string C_NOMBRE_ARCHIVO_INI = "TrinidadDb.ini";
+        private const string C_NOMBRE_ARCHIVO_BITACORAS = "Bitacora.ini";
+
+        #endregion
 
         /// <summary>
         /// Obtiene la lista de ambientes configurados.-
@@ -360,7 +367,7 @@ namespace compass
             StreamWriter sr;
             Assembly myAssembly = Assembly.GetExecutingAssembly();
             string? rutaArchivo = Path.GetDirectoryName(myAssembly.Location);
-            string nombreArchivo = "TrinidadDb.ini";
+            string nombreArchivo = C_NOMBRE_ARCHIVO_INI;
             string usr = "#########";
             string pwd = "#########";
 
@@ -379,32 +386,43 @@ namespace compass
             sr.WriteLine($"Pwd={pwd}");
             sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
             sr.Close();
-
-
-            //Bitacora
-            nombreArchivo = "Bitacora.ini";
+            
+            //Bitacoras
+            nombreArchivo = C_NOMBRE_ARCHIVO_BITACORAS;
             sr = new StreamWriter($"{rutaArchivo}{Path.DirectorySeparatorChar}{nombreArchivo}");
-            sr.WriteLine("[TrinidadSeg]");
-            sr.WriteLine($"Almacenamiento=1");
-            sr.WriteLine($"DataSource={this.Servidor}");
-            sr.WriteLine($"Catalog={this.BaseDeDatos}");
-            sr.WriteLine($"Table=BitacoraSeguridad");
-            sr.WriteLine($"IntegratedSecurity={this.SeguridadIntegrada}");
-            sr.WriteLine($"User={usr}");
-            sr.WriteLine($"Pwd={pwd}");
-            sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
 
-            sr.WriteLine("");
+            foreach (Bitacora b in misBitacoras)
+            {
+                sr.WriteLine($"[{b.Nombre}]");
+                sr.WriteLine($"{C_ALMACENAMIENTO}={b.Almacenamiento}");
 
-            sr.WriteLine("[Questra]");
-            sr.WriteLine($"Almacenamiento=1");
-            sr.WriteLine($"DataSource={this.Servidor}");
-            sr.WriteLine($"Catalog={this.BaseDeDatos}");
-            sr.WriteLine($"Table=BitacoraSeguridad");
-            sr.WriteLine($"IntegratedSecurity={this.SeguridadIntegrada}");
-            sr.WriteLine($"User={usr}");
-            sr.WriteLine($"Pwd={pwd}");
-            sr.WriteLine($"EncryptPwd={this.EncriptarPassword}");
+                if (b.Almacenamiento == 1)
+                {
+                    BitacoraBaseDeDatos b1 = (BitacoraBaseDeDatos)b;
+                    sr.WriteLine($"DataSource={b1.Servidor}");
+                    sr.WriteLine($"Catalog={b1.BaseDeDatos}");
+                    sr.WriteLine($"Table={b1.Tabla}");
+                    sr.WriteLine($"IntegratedSecurity={b1.SeguridadIntegrada}");
+                    sr.WriteLine($"User={b1.Usuario}");
+                    sr.WriteLine($"Pwd={b1.Password}");
+                    sr.WriteLine($"EncryptPwd={b1.EncriptarPassword}");
+                }
+                else
+                {
+                    BitacoraArchivo b2 = (BitacoraArchivo)b;
+                    sr.WriteLine($"Ruta={b2.Ruta}");
+                    sr.WriteLine($"Archivo={b2.NombreArchivo}");
+                    sr.WriteLine($"Extension={b2.Extension}");
+                    sr.WriteLine($"Separador={b2.Separador}");
+                    sr.WriteLine($"LimiteMB={b2.Limite}");
+                    sr.WriteLine($"UltimoId=0");
+                    sr.WriteLine($"UltimoVolumen=0");
+                }
+
+                sr.WriteLine("");
+            }
+
+            sr.Close();
         }
 
         /// <summary>
@@ -505,7 +523,6 @@ namespace compass
                 password.AppendChild(texto_Password);
                 encriptarPassword.AppendChild(texto_EncriptarPassword);
 
-
                 //bitacoras
                 if (a.MisBitacoras != null)
                 {
@@ -513,10 +530,9 @@ namespace compass
 
                     foreach (Bitacora b in a.misBitacoras)
                     {
-                        XmlElement unaBitacora = doc.CreateElement("", "Bitacora", "");
-                        
-                        XmlElement almacenamientoBitacora = doc.CreateElement("", "Almacenamiento", "");
-                        XmlElement nombreBitacora = doc.CreateElement("", "Nombre", "");
+                        XmlElement unaBitacora = doc.CreateElement("", "Bitacora", string.Empty);
+                        XmlElement almacenamientoBitacora = doc.CreateElement("", C_ALMACENAMIENTO, string.Empty);
+                        XmlElement nombreBitacora = doc.CreateElement("", "Nombre", string.Empty);
 
                         XmlText texto_almacenamientoBitacora = doc.CreateTextNode(b.Almacenamiento.ToString());
                         XmlText texto_nombreBitacora = doc.CreateTextNode(b.Nombre);
@@ -530,13 +546,13 @@ namespace compass
                         if (b.Almacenamiento == 1)
                         {
                             BitacoraBaseDeDatos bitacoraAuxiliar = (BitacoraBaseDeDatos) b;
-                            XmlElement bitacoraServidor = doc.CreateElement("", C_SERVIDOR, "");
-                            XmlElement bitacoraBaseDeDatos = doc.CreateElement("", C_BASE_DE_DATOS, "");
-                            XmlElement bitacoraTabla = doc.CreateElement("", C_TABLA, "");
-                            XmlElement bitacoraSeguridadIntegrada = doc.CreateElement("", C_SEGURIDAD_INTEGRADA, "");
-                            XmlElement bitacoraUsuario = doc.CreateElement("", C_USUARIO, "");
-                            XmlElement bitacoraPassword = doc.CreateElement("", C_PASSWORD, "");
-                            XmlElement bitacoraEncriptarPassword = doc.CreateElement("", C_ENCRIPTAR_PASSWORD, "");
+                            XmlElement bitacoraServidor = doc.CreateElement("", C_SERVIDOR, string.Empty);
+                            XmlElement bitacoraBaseDeDatos = doc.CreateElement("", C_BASE_DE_DATOS, string.Empty);
+                            XmlElement bitacoraTabla = doc.CreateElement("", C_TABLA, string.Empty);
+                            XmlElement bitacoraSeguridadIntegrada = doc.CreateElement("",C_SEGURIDAD_INTEGRADA, string.Empty);
+                            XmlElement bitacoraUsuario = doc.CreateElement("", C_USUARIO, string.Empty);
+                            XmlElement bitacoraPassword = doc.CreateElement("", C_PASSWORD, string.Empty);
+                            XmlElement bitacoraEncriptarPassword = doc.CreateElement("", C_ENCRIPTAR_PASSWORD, string.Empty);
 
                             XmlText texto_bitacoraServidor = doc.CreateTextNode(bitacoraAuxiliar.Servidor);
                             XmlText texto_bitacoraBaseDeDatos = doc.CreateTextNode(bitacoraAuxiliar.BaseDeDatos);

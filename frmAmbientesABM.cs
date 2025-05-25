@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace compass
 {
@@ -21,7 +23,6 @@ namespace compass
         private bool modoEdicionBitacora;
         private bool cargaEnProgreso;
         private Ambiente? ambienteActual;
-        private Bitacora? bitacoraActual;
         private List<Ambiente>? listaDeAmbientes;
         private List<Bitacora>? listaDeBitacoras;
         private const string C_TITULO_MESSAGE_BOX = "Mantenimiento de Ambientes";
@@ -57,7 +58,6 @@ namespace compass
                     ambienteActual.EncriptarPassword = chkEncriptarPassword.Checked;
 
                 Ambiente.Actualizar(ambienteActual);
-
             }
             else
             {
@@ -80,55 +80,59 @@ namespace compass
 
         private void btnBitacoraAceptar_Click(object sender, EventArgs e)
         {
+
+
+            Bitacora nuevaBitacora;
+
             if (modoEdicionBitacora)
+                listaDeBitacoras.RemoveAll(b => b.Nombre == txtBitacoraNombre.Text);
+
+            if (optBitacoraAlmacenamiento1.Checked)
             {
-                //actualizar la bitácora actual
+                //base de datos
+                string axUsuario = txtBitacoraUsuario.Text;
+                string axPassword = txtBitacoraPassword.Text;
+                
+                if (chkBitacoraSeguridadIntegrada.Checked)
+                {
+                    axUsuario = "";
+                    axPassword = "";
+                }
+
+                nuevaBitacora = new BitacoraBaseDeDatos
+                {
+                    Almacenamiento = 1,
+                    Nombre = txtBitacoraNombre.Text,
+                    Servidor = txtBitacoraServidor.Text,
+                    BaseDeDatos = txtBitacoraBaseDeDatos.Text,
+                    Tabla = txtBitacoraTabla.Text,
+                    SeguridadIntegrada = chkBitacoraSeguridadIntegrada.Checked,
+                    Usuario = axUsuario,
+                    Password = axPassword,
+                    EncriptarPassword = chkBitacoraEncriptarPassword.Checked
+                };
             }
             else
             {
-                if (optBitacoraAlmacenamiento1.Checked)
+                nuevaBitacora = new BitacoraArchivo
                 {
-                    //base de datos
-                    string axUsuario = txtBitacoraUsuario.Text;
-                    string axPassword = txtBitacoraPassword.Text;
+                    Almacenamiento = 2,
+                    Nombre = txtBitacoraNombre.Text,
+                    Ruta = txtBitacoraRuta.Text,
+                    NombreArchivo = txtBitacoraNombreArchivo.Text,
+                    Extension = txtBitacoraExtension.Text,
+                    Separador = txtBitacoraSeparador.Text,
+                    Limite = System.Convert.ToInt32(nudBitacoraLimiteMB.Value),
+                };
+            }
 
-                    if (chkSeguridadIntegrada.Checked)
-                    {
-                        axUsuario = "";
-                        axPassword = "";
-                    }
+            listaDeBitacoras.Add(nuevaBitacora);
 
-                    BitacoraBaseDeDatos nuevaBitacora = new BitacoraBaseDeDatos
-                    {
-                        Almacenamiento = 1,
-                        Nombre = txtBitacoraNombre.Text,
-                        Servidor = txtBitacoraServidor.Text,
-                        BaseDeDatos = txtBitacoraBaseDeDatos.Text,
-                        Tabla = txtBitacoraTabla.Text,
-                        SeguridadIntegrada = chkSeguridadIntegrada.Checked,
-                        Usuario = axUsuario,
-                        Password = axPassword,
-                        EncriptarPassword = chkEncriptarPassword.Checked
-                    };
-
-                    listaDeBitacoras.Add(nuevaBitacora);
-                }
-                else
-                {
-                    BitacoraArchivo nuevaBitacora = new BitacoraArchivo
-                    {
-                        Almacenamiento = 2,
-                        Nombre = txtBitacoraNombre.Text,
-                        Ruta = txtBitacoraRuta.Text,
-                        NombreArchivo = txtBitacoraNombreArchivo.Text,
-                        Extension = txtBitacoraExtension.Text,
-                        Separador = txtBitacoraSeparador.Text,
-                        Limite = System.Convert.ToInt32(nudBitacoraLimiteMB.Value),
-                    };
-
-                    listaDeBitacoras.Add(nuevaBitacora);
-                }
-
+            if (!modoEdicionBitacora)
+            {
+                cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
+                limpiarControlesDeBitacoraBD();
+                optBitacoraAlmacenamiento1.Checked = true;
             }
         }
 
@@ -172,6 +176,24 @@ namespace compass
                 {
                     MessageBox.Show(ex.Message, C_TITULO_MESSAGE_BOX, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+            }
+        }
+
+        private void chkBitacoraSeguridadIntegrada_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkBitacoraSeguridadIntegrada.Checked)
+            {
+                txtBitacoraUsuario.Text = "";
+                txtBitacoraPassword.Text = "";
+                txtBitacoraUsuario.Enabled = false;
+                txtBitacoraPassword.Enabled = false;
+            }
+            else
+            {
+                txtBitacoraUsuario.Text = "";
+                txtBitacoraPassword.Text = "";
+                txtBitacoraUsuario.Enabled = true;
+                txtBitacoraPassword.Enabled = true;
             }
         }
 
@@ -309,12 +331,9 @@ namespace compass
                 foreach (Bitacora b in listaDeBitacoras)
                     cmbBitacorasRegistradas.Items.Add(b.Nombre);
 
-                
-
                 modoEdicionBitacora = true;
                 configurarBitacoraGUI();
-                
-                
+
                 //mostrar bitacora actual
             }
         }
@@ -324,8 +343,12 @@ namespace compass
         /// </summary>
         private void configurarGUI()
         {
+            tabControl1.SelectTab(0);
+
             if (modoEdicion)
             {
+                cambiarEstadoControlesDeBitacora(true);
+                lblBitacoraModo.Text = "";
                 btnAceptar.Text = "Actualizar";
                 btnCancelar.Visible = false;
                 btnEliminar.Visible = true;
@@ -336,6 +359,8 @@ namespace compass
             }
             else
             {
+                cambiarEstadoControlesDeBitacora(false);
+                lblBitacoraModo.Text = "Editar";
                 txtNombreAmbiente.Text = "";
                 txtDescripcionAmbiente.Text = "";
                 txtServidorAmbiente.Text = "";
@@ -354,6 +379,10 @@ namespace compass
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bitacora"></param>
         private void mostrarBitacora(BitacoraBaseDeDatos bitacora)
         {
             fraBitacoraDatosAlmacenamiento1.Visible = true;
@@ -380,6 +409,10 @@ namespace compass
             chkBitacoraEncriptarPassword.Checked = bitacora.EncriptarPassword;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bitacora"></param>
         private void mostrarBitacora(BitacoraArchivo bitacora)
         {
             fraBitacoraDatosAlmacenamiento2.Visible = true;
@@ -393,49 +426,50 @@ namespace compass
             nudBitacoraLimiteMB.Value = bitacora.Limite;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void configurarBitacoraGUI()
         {
-            txtBitacoraNombre.Text = "";
-            txtBitacoraServidor.Text = "";
-            txtBitacoraBaseDeDatos.Text = "";
-            txtBitacoraTabla.Text = "";
-            txtBitacoraUsuario.Text = "";
-            txtBitacoraPassword.Text = "";
+            limpiarControlesDeBitacoraBD();
+            limpiarControlesDeBitacoraArchivo();
 
-            txtBitacoraNombre.Text = "";
-            txtBitacoraRuta.Text = "";
-            txtBitacoraNombreArchivo.Text = "";
-            txtBitacoraExtension.Text = "";
-            nudBitacoraLimiteMB.Value = 0;
-
-            chkBitacoraSeguridadIntegrada.Checked = false;
-            chkBitacoraEncriptarPassword.Checked = false;
             optBitacoraAlmacenamiento1.Checked = true;
+
             mostrarDatosDeAlmacenamiento("base");
 
             if (modoEdicionBitacora)
             {
+                cmbBitacorasRegistradas.Enabled = true;
                 btnBitacoraEliminar.Enabled = true;
                 btnBitacoraNueva.Visible = true;
                 btnBitacoraCancelar.Visible = false;
+                btnBitacoraAceptar.Text = "Actualizar";
                 txtBitacoraNombre.ReadOnly = true;
-                fraBitacoraAlmacenamiento.Enabled = false;
+                //fraBitacoraAlmacenamiento.Enabled = false;
                 lblBitacoraModo.Text = "Edición";
                 lblBitacoraModo.ForeColor = Color.CadetBlue;
             }
             else
             {
+                cmbBitacorasRegistradas.Enabled = false;
                 btnBitacoraEliminar.Enabled = false;
                 btnBitacoraNueva.Visible = false;
                 btnBitacoraCancelar.Visible = true;
+                btnBitacoraAceptar.Text = "Grabar";
                 txtBitacoraNombre.ReadOnly = false;
-                fraBitacoraAlmacenamiento.Enabled = true;
+                //fraBitacoraAlmacenamiento.Enabled = true;
                 lblBitacoraModo.Text = "Alta";
                 lblBitacoraModo.ForeColor = Color.Crimson;
                 optBitacoraAlmacenamiento1.Checked = true;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void optBitacoras_CheckedChanged(object sender, EventArgs e)
         {
             if (!cargaEnProgreso)
@@ -447,6 +481,10 @@ namespace compass
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="almacenamiento"></param>
         private void mostrarDatosDeAlmacenamiento(string almacenamiento)
         {
             if (almacenamiento == "base")
@@ -463,6 +501,52 @@ namespace compass
 
                 fraBitacoraDatosAlmacenamiento2.Visible = true;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void limpiarControlesDeBitacoraBD()
+        {
+            txtBitacoraNombre.Text = "";
+            txtBitacoraServidor.Text = "";
+            txtBitacoraBaseDeDatos.Text = "";
+            txtBitacoraTabla.Text = "";
+            chkSeguridadIntegrada.Checked = true;
+            txtBitacoraUsuario.Text = "";
+            txtBitacoraPassword.Text = "";
+            chkEncriptarPassword.Checked = false;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void limpiarControlesDeBitacoraArchivo()
+        {
+            txtBitacoraNombre.Text = "";
+            txtBitacoraRuta.Text = "";
+            txtBitacoraNombreArchivo.Text = "";
+            txtBitacoraExtension.Text = "";
+            txtBitacoraSeparador.Text = "";
+            nudBitacoraLimiteMB.Value = 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nuevoEstado"></param>
+        private void cambiarEstadoControlesDeBitacora(bool nuevoEstado)
+        {
+            groupBox1.Enabled = nuevoEstado;
+            cmbBitacorasRegistradas.Enabled = nuevoEstado;
+            fraBitacoraAlmacenamiento.Enabled = nuevoEstado;
+            fraBitacoraDatosAlmacenamiento1.Enabled = nuevoEstado;
+            fraBitacoraDatosAlmacenamiento2.Enabled = nuevoEstado;
+            btnBitacoraNueva.Enabled = nuevoEstado;
+            btnBitacoraAceptar.Enabled = nuevoEstado;
+            btnBitacoraEliminar.Enabled = nuevoEstado;
+            btnBitacoraCancelar.Enabled = nuevoEstado;
         }
 
     }

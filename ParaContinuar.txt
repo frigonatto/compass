@@ -25,9 +25,9 @@ refactorización de los métodos Actualizar(Ambiente), Eliminar(Ambiente) y Guar
 ==========
 8:30 a 9:30 - modificación del XML para incluir las bitácoras; diseño del formulario para editar las bitácoras de un ambiente.-
 
-Para continuar
-Creación de los archivos INI necesarios para el ambiente.-
-Cambiar los atributos/métodos por propiedades get/set
+Para continuar ambiente.-
+Cambiar los atributos/métodos por propiedades 
+Creación de los archivos INI necesarios para elget/set
 Incluir validaciones
 
 
@@ -50,10 +50,62 @@ Ambiente.crearArchivoXML(...) para incluir la grabación de las bitácoras
 ==========
 8:15 a 10:00 - Finalización de la escritura del XML incluyendo las bitacoras.-
 
+22-05-2025
+==========
+12:15 a 13:00 limpieza de controles luego de hacer un alta de bitácora
 
 Para continuar:
 
-1) Limpiar controles luego de cada alta de bitacora
+
 2) Generar archivos INI de bitacoras
 3) Leer un archivo que no tenga bien el formato y "contener" las excepciones
+
+
+                if (optBitacoraAlmacenamiento1.Checked)
+                {
+                    //base de datos
+                    string axUsuario = txtBitacoraUsuario.Text;
+                    string axPassword = txtBitacoraPassword.Text;
+
+                    if (chkSeguridadIntegrada.Checked)
+                    {
+                        axUsuario = "";
+                        axPassword = "";
+                    }
+
+                    BitacoraBaseDeDatos nuevaBitacora = new BitacoraBaseDeDatos
+                    {
+                        Almacenamiento = 1,
+                        Nombre = txtBitacoraNombre.Text,
+                        Servidor = txtBitacoraServidor.Text,
+                        BaseDeDatos = txtBitacoraBaseDeDatos.Text,
+                        Tabla = txtBitacoraTabla.Text,
+                        SeguridadIntegrada = chkSeguridadIntegrada.Checked,
+                        Usuario = axUsuario,
+                        Password = axPassword,
+                        EncriptarPassword = chkEncriptarPassword.Checked
+                    };
+
+                    listaDeBitacoras.Add(nuevaBitacora);
+                    cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
+                    limpiarControlesDeBitacoraBD();
+                    optBitacoraAlmacenamiento1.Checked = true;
+                }
+                else
+                {
+                    BitacoraArchivo nuevaBitacora = new BitacoraArchivo
+                    {
+                        Almacenamiento = 2,
+                        Nombre = txtBitacoraNombre.Text,
+                        Ruta = txtBitacoraRuta.Text,
+                        NombreArchivo = txtBitacoraNombreArchivo.Text,
+                        Extension = txtBitacoraExtension.Text,
+                        Separador = txtBitacoraSeparador.Text,
+                        Limite = System.Convert.ToInt32(nudBitacoraLimiteMB.Value),
+                    };
+
+                    listaDeBitacoras.Add(nuevaBitacora);
+                    cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
+                    limpiarControlesDeBitacoraArchivo();
+                }
 
