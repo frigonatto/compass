@@ -7,89 +7,143 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 using System.Xml;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace compass
 {
+    /// <summary>
+    /// Modela un ambiente.-
+    /// </summary>
     public class Ambiente
     {
         #region atributos
 
+        /// <summary>
+        /// Nombre del ambiente.-
+        /// </summary>
         private string nombre;
 
+        /// <summary>
+        /// Descripción del ambiente.-
+        /// </summary>
         private string descripcion;
 
+        /// <summary>
+        /// Servidor del ambiente.-
+        /// </summary>
         private string servidor;
 
+        /// <summary>
+        /// Nombre de la base de datos del ambiente.-
+        /// </summary>
         private string baseDeDatos;
 
+        /// <summary>
+        /// Indica si el ambiente usa la seguridad integrada para la conexión al mismo.-
+        /// </summary>
         private bool seguridadIntegrada;
 
+        /// <summary>
+        /// Nombre del usuario para la conexión al ambiente.-
+        /// </summary>
         private string usuario;
 
+        /// <summary>
+        /// Contraseña para la conexión al ambiente.-
+        /// </summary>
         private string password;
 
+        /// <summary>
+        /// Indica si la contraseña para el acceso al ambiente está encriptada o no.-
+        /// </summary>
         private bool encriptarPassword;
 
-        List<BitacoraArchivo>? bitacorasDeArchivo;
-
-        List<BitacoraBaseDeDatos>? bitacorasDeBasesDeDatos;
-
+        /// <summary>
+        /// Lista de las bitácoras del ambiente.-
+        /// </summary>
         List<Bitacora>? misBitacoras;
 
         #endregion
 
         #region propiedades
 
+        /// <summary>
+        /// Obtiene el nombre del ambiente.-
+        /// </summary>
         public string Nombre
         {
             get { return nombre; }
         }
 
+        /// <summary>
+        /// Obtiene la descripción del ambiente.-
+        /// </summary>
         public string Descripcion
         {
             get { return descripcion; }
             set {  descripcion = value; }    
         }
 
+        /// <summary>
+        /// Obtiene el nombre del servidor del ambiente.-
+        /// </summary>
         public string Servidor
         {
             get { return servidor; }
             set { servidor = value; }
         }
 
+        /// <summary>
+        /// Obtiene la base de datos a utilizar para el ambiente.-
+        /// </summary>
         public string BaseDeDatos
         {
             get { return baseDeDatos; }
             set { baseDeDatos = value; }
         }
 
+        /// <summary>
+        /// Obtiene el valor que indica si el ambiente utiliza Seguridad Integrada o no.-
+        /// </summary>
         public bool SeguridadIntegrada
         {
             get { return seguridadIntegrada; }
             set { seguridadIntegrada = value; }
         }
 
+        /// <summary>
+        /// Obtiene el nombre del usuario para la conexión con el ambiente.-
+        /// </summary>
         public string Usuario
         {
             get { return usuario; }
             set { usuario = value; }
         }
 
+        /// <summary>
+        /// Obtiene la contraseña para la conexión con el ambiente.-
+        /// </summary>
         public string Password
         {
             get { return password; }
             set { password = value; }
         }
 
+        /// <summary>
+        /// Obtiene el valor que indica si debe o no encriptarse la contraseña para la conexión con el ambiente.- 
+        /// </summary>
         public bool EncriptarPassword
         {
             get { return encriptarPassword; }
             set { encriptarPassword = value; }
         }
 
+        /// <summary>
+        /// Lista de las bitácoras asociadas al ambiente.-
+        /// </summary>
         public List<Bitacora> MisBitacoras
         {
             get { return misBitacoras ; }
@@ -104,6 +158,8 @@ namespace compass
         private const string C_AMBIENTE = "Ambiente";
         private const string C_AMBIENTES = "Ambientes";
         private const string C_BASE_DE_DATOS = "BaseDeDatos";
+        private const string C_BITACORA = "Bitacora";
+        private const string C_BITACORAS = "Bitacoras";
         private const string C_DESCRIPCION = "Descripcion";
         private const string C_ENCRIPTAR_PASSWORD = "EncriptarPassword";
         private const string C_EXTENSION = "Extension";
@@ -150,7 +206,7 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Obtiene los nombres de los ambientes configurados.-
         /// </summary>
         /// <returns></returns>
         public static List<string> ObtenerNombres()
@@ -178,9 +234,9 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Constructor: genera un ambiente nuevo con los datos contenidos en el elemento XML recibido por parámetro.-
         /// </summary>
-        /// <param name="ambienteRecuperado"></param>
+        /// <param name="ambienteRecuperado">Elemento XML con los datos para armar un nuevo ambiente.-</param>
         private Ambiente(XElement ambienteRecuperado)
         {
             this.nombre = ambienteRecuperado.Element(C_NOMBRE).Value.ToString();
@@ -192,8 +248,6 @@ namespace compass
             this.usuario = ambienteRecuperado.Element(C_USUARIO).Value.ToString();
             this.password = ambienteRecuperado.Element(C_PASSWORD).Value.ToString();
 
-            this.bitacorasDeArchivo = new List<BitacoraArchivo>();
-            this.bitacorasDeBasesDeDatos = new List<BitacoraBaseDeDatos>();
             this.misBitacoras = new List<Bitacora>(); 
 
             IEnumerable<XElement> bitacoras = ambienteRecuperado.Descendants("Bitacoras");
@@ -206,7 +260,7 @@ namespace compass
                     {
                         BitacoraBaseDeDatos bit_base = new BitacoraBaseDeDatos
                         {
-                            Almacenamiento = 1,
+                            Almacenamiento = BitacoraAlmacenamiento.BaseDeDatos,
                             Nombre = x.Element(C_NOMBRE).Value.ToString(),
                             Servidor = x.Element(C_SERVIDOR).Value.ToString(),
                             BaseDeDatos = x.Element(C_BASE_DE_DATOS).Value.ToString(),
@@ -224,7 +278,7 @@ namespace compass
                     {
                         BitacoraArchivo bit_archivo = new BitacoraArchivo
                         {
-                            Almacenamiento = 2,
+                            Almacenamiento = BitacoraAlmacenamiento.Archivo,
                             Nombre = x.Element("Nombre").Value.ToString(),
                             Ruta = x.Element("Ruta").Value.ToString(),
                             NombreArchivo = x.Element(C_NOMBRE_ARCHIVO).Value.ToString(),
@@ -240,10 +294,10 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Constructor: obtiene el ambiente cuyo nombre coincida con el recibido como parámetro.-
         /// </summary>
-        /// <param name="nombreBuscado"></param>
-        /// <exception cref="AmbienteNoEncontradoException"></exception>
+        /// <param name="nombreBuscado">Nombre del ambiente a buscar.-</param>
+        /// <exception cref="AmbienteNoEncontradoException">Excepción que se produce cuando no se encuentra el ambiente buscado.-</exception>
         public Ambiente (string nombreBuscado)
         {
             List<Ambiente>? ambientesConfigurados = new List<Ambiente>();
@@ -269,12 +323,12 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Constructor: genera un nuevo ambiente a partir de los datos recibidos por parámetro.-
         /// </summary>
-        /// <param name="nuevoNombre"></param>
-        /// <param name="nuevaDescripcion"></param>
-        /// <param name="nuevoServidor"></param>
-        /// <param name="nuevaBaseDeDatos"></param>
+        /// <param name="nuevoNombre">Nombre para el nuevo ambiente.-</param>
+        /// <param name="nuevaDescripcion">Descripción para el nuevo ambiente.-</param>
+        /// <param name="nuevoServidor">Nombre del servidor para el nuevo ambiente.-</param>
+        /// <param name="nuevaBaseDeDatos">Nombre de la base de datos para el nuevo ambiente.-</param>
         public Ambiente(string nuevoNombre, string nuevaDescripcion, string nuevoServidor, string nuevaBaseDeDatos)
         {
             //Se valida que se ingrese el nombre del ambiente.-
@@ -309,15 +363,15 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Constructor: genera un nuevo ambiente a partir de los datos recibidos por parámetro.-
         /// </summary>
-        /// <param name="nuevoNombre"></param>
-        /// <param name="nuevaDescripcion"></param>
-        /// <param name="nuevoServidor"></param>
-        /// <param name="nuevaBaseDeDatos"></param>
-        /// <param name="nuevoUsuario"></param>
-        /// <param name="nuevaPassword"></param>
-        /// <param name="nuevaEncriptarPassword"></param>
+        /// <param name="nuevoNombre">Nombre para el nuevo ambiente.-</param>
+        /// <param name="nuevaDescripcion">Descripción para el nuevo ambiente.-</param>
+        /// <param name="nuevoServidor">Nombre del servidor para el nuevo ambiente.-</param>
+        /// <param name="nuevaBaseDeDatos">Nombre de la base de datos para el nuevo ambiente.-</param>
+        /// <param name="nuevoUsuario">Id del usuario para el nuevo ambiente.-</param>
+        /// <param name="nuevaPassword">Password para el nuevo ambiente.-</param>
+        /// <param name="nuevaEncriptarPassword">Valor que indica si debe encriptarse la password para acceso al nuevo ambiente.-</param>
         public Ambiente(string nuevoNombre, string nuevaDescripcion, string nuevoServidor, string nuevaBaseDeDatos, string nuevoUsuario, string nuevaPassword, bool nuevaEncriptarPassword)
         {
             //Se valida que se ingrese el nombre del ambiente.-
@@ -360,7 +414,7 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Genera el archivo INI para el acceso a datos y el correspondiente para acceso a bitácoras si es que el ambiente las tiene.-
         /// </summary>
         public void GenerarArchivosINI()
         {
@@ -394,9 +448,9 @@ namespace compass
             foreach (Bitacora b in misBitacoras)
             {
                 sr.WriteLine($"[{b.Nombre}]");
-                sr.WriteLine($"{C_ALMACENAMIENTO}={b.Almacenamiento}");
+                sr.WriteLine($"{C_ALMACENAMIENTO}={(int) b.Almacenamiento}");
 
-                if (b.Almacenamiento == 1)
+                if (b.Almacenamiento == BitacoraAlmacenamiento.BaseDeDatos)
                 {
                     BitacoraBaseDeDatos b1 = (BitacoraBaseDeDatos)b;
                     sr.WriteLine($"DataSource={b1.Servidor}");
@@ -426,10 +480,10 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Guarda el ambiente recibido como parámetro, en la lista de ambientes del sistema.-
         /// </summary>
-        /// <param name="nuevoAmbiente"></param>
-        public  static void Guardar( Ambiente ambienteParaGuardar)
+        /// <param name="nuevoAmbiente">Ambiente nuevo para guardar en la lista.-</param>
+        public  static void Guardar(Ambiente ambienteParaGuardar)
         {
             List<Ambiente> ambientesExistentes = Ambiente.Obtener();
             ambientesExistentes.Add(ambienteParaGuardar);
@@ -439,9 +493,9 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Actualiza en la lista de ambientes aquel cuyo nombre coincida con el del ambiente recibido como parámetro.-
         /// </summary>
-        /// <param name="ambienteParaActualizar"></param>
+        /// <param name="ambienteParaActualizar">Ambiente para actualizar en la lista.-</param>
         public static void Actualizar(Ambiente ambienteParaActualizar)
         {
             List<Ambiente> ambientesExistentes = Ambiente.Obtener();
@@ -454,7 +508,7 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Elimina de la lista de ambientes del sistema, el que se recibe como parámetro.-
         /// </summary>
         /// <param name="ambienteParaEliminar"></param>
         public static void Eliminar(Ambiente ambienteParaEliminar)
@@ -467,9 +521,9 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Crea el archivo XML donde se almacenan todos los ambientes del sistema.-
         /// </summary>
-        /// <param name="ambientesExistentes"></param>
+        /// <param name="ambientesExistentes">Lista de los ambientes con los que se deben crear el archivo XML.-</param>
         private static void crearArchivoXML(List<Ambiente> ambientesExistentes)
         {
             Assembly myAssembly = Assembly.GetExecutingAssembly();
@@ -523,18 +577,18 @@ namespace compass
                 password.AppendChild(texto_Password);
                 encriptarPassword.AppendChild(texto_EncriptarPassword);
 
-                //bitacoras
+                //Bitacoras
                 if (a.MisBitacoras != null)
                 {
-                    XmlElement coleccionDeBitacoras = doc.CreateElement("", "Bitacoras", "");
+                    XmlElement coleccionDeBitacoras = doc.CreateElement(string.Empty, C_BITACORAS, string.Empty);
 
                     foreach (Bitacora b in a.misBitacoras)
                     {
-                        XmlElement unaBitacora = doc.CreateElement("", "Bitacora", string.Empty);
-                        XmlElement almacenamientoBitacora = doc.CreateElement("", C_ALMACENAMIENTO, string.Empty);
-                        XmlElement nombreBitacora = doc.CreateElement("", "Nombre", string.Empty);
+                        XmlElement unaBitacora = doc.CreateElement(string.Empty, C_BITACORA, string.Empty);
+                        XmlElement almacenamientoBitacora = doc.CreateElement(string.Empty, C_ALMACENAMIENTO, string.Empty);
+                        XmlElement nombreBitacora = doc.CreateElement(string.Empty, "Nombre", string.Empty);
 
-                        XmlText texto_almacenamientoBitacora = doc.CreateTextNode(b.Almacenamiento.ToString());
+                        XmlText texto_almacenamientoBitacora = doc.CreateTextNode(((int)b.Almacenamiento).ToString());
                         XmlText texto_nombreBitacora = doc.CreateTextNode(b.Nombre);
 
                         almacenamientoBitacora.AppendChild(texto_almacenamientoBitacora);
@@ -543,16 +597,16 @@ namespace compass
                         unaBitacora.AppendChild(almacenamientoBitacora);
                         unaBitacora.AppendChild(nombreBitacora);
 
-                        if (b.Almacenamiento == 1)
+                        if (b.Almacenamiento == BitacoraAlmacenamiento.BaseDeDatos)
                         {
                             BitacoraBaseDeDatos bitacoraAuxiliar = (BitacoraBaseDeDatos) b;
-                            XmlElement bitacoraServidor = doc.CreateElement("", C_SERVIDOR, string.Empty);
-                            XmlElement bitacoraBaseDeDatos = doc.CreateElement("", C_BASE_DE_DATOS, string.Empty);
-                            XmlElement bitacoraTabla = doc.CreateElement("", C_TABLA, string.Empty);
-                            XmlElement bitacoraSeguridadIntegrada = doc.CreateElement("",C_SEGURIDAD_INTEGRADA, string.Empty);
-                            XmlElement bitacoraUsuario = doc.CreateElement("", C_USUARIO, string.Empty);
-                            XmlElement bitacoraPassword = doc.CreateElement("", C_PASSWORD, string.Empty);
-                            XmlElement bitacoraEncriptarPassword = doc.CreateElement("", C_ENCRIPTAR_PASSWORD, string.Empty);
+                            XmlElement bitacoraServidor = doc.CreateElement(string.Empty, C_SERVIDOR, string.Empty);
+                            XmlElement bitacoraBaseDeDatos = doc.CreateElement(string.Empty, C_BASE_DE_DATOS, string.Empty);
+                            XmlElement bitacoraTabla = doc.CreateElement(string.Empty, C_TABLA, string.Empty);
+                            XmlElement bitacoraSeguridadIntegrada = doc.CreateElement(string.Empty, C_SEGURIDAD_INTEGRADA, string.Empty);
+                            XmlElement bitacoraUsuario = doc.CreateElement(string.Empty, C_USUARIO, string.Empty);
+                            XmlElement bitacoraPassword = doc.CreateElement(string.Empty, C_PASSWORD, string.Empty);
+                            XmlElement bitacoraEncriptarPassword = doc.CreateElement(string.Empty, C_ENCRIPTAR_PASSWORD, string.Empty);
 
                             XmlText texto_bitacoraServidor = doc.CreateTextNode(bitacoraAuxiliar.Servidor);
                             XmlText texto_bitacoraBaseDeDatos = doc.CreateTextNode(bitacoraAuxiliar.BaseDeDatos);
@@ -581,11 +635,11 @@ namespace compass
                         else
                         {
                             BitacoraArchivo bitacoraAuxiliar = (BitacoraArchivo)b;
-                            XmlElement bitacoraRuta = doc.CreateElement("", C_RUTA, "");
-                            XmlElement bitacoraNombreArchivo = doc.CreateElement("", C_NOMBRE_ARCHIVO, "");
-                            XmlElement bitacoraExtension = doc.CreateElement("", C_EXTENSION, "");
-                            XmlElement bitacoraSeparador = doc.CreateElement("", C_SEPARADOR, "");
-                            XmlElement bitacoraLimite = doc.CreateElement("", C_LIMITE, "");
+                            XmlElement bitacoraRuta = doc.CreateElement(string.Empty, C_RUTA, string.Empty);
+                            XmlElement bitacoraNombreArchivo = doc.CreateElement(string.Empty, C_NOMBRE_ARCHIVO, string.Empty);
+                            XmlElement bitacoraExtension = doc.CreateElement(string.Empty, C_EXTENSION, string.Empty);
+                            XmlElement bitacoraSeparador = doc.CreateElement(string.Empty, C_SEPARADOR, string.Empty);
+                            XmlElement bitacoraLimite = doc.CreateElement(string.Empty, C_LIMITE, string.Empty);
 
                             XmlText texto_bitacoraRuta = doc.CreateTextNode(bitacoraAuxiliar.Ruta);
                             XmlText texto_bitacoraNombreArchivo = doc.CreateTextNode(bitacoraAuxiliar.NombreArchivo);
@@ -617,7 +671,7 @@ namespace compass
         }
 
         /// <summary>
-        /// 
+        /// Borra el archivo XML que contiene los ambientes del sistema.-
         /// </summary>
         private static void borrarArchivoXML()
         {

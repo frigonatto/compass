@@ -80,8 +80,6 @@ namespace compass
 
         private void btnBitacoraAceptar_Click(object sender, EventArgs e)
         {
-
-
             Bitacora nuevaBitacora;
 
             if (modoEdicionBitacora)
@@ -101,7 +99,7 @@ namespace compass
 
                 nuevaBitacora = new BitacoraBaseDeDatos
                 {
-                    Almacenamiento = 1,
+                    Almacenamiento = BitacoraAlmacenamiento.BaseDeDatos,
                     Nombre = txtBitacoraNombre.Text,
                     Servidor = txtBitacoraServidor.Text,
                     BaseDeDatos = txtBitacoraBaseDeDatos.Text,
@@ -116,7 +114,7 @@ namespace compass
             {
                 nuevaBitacora = new BitacoraArchivo
                 {
-                    Almacenamiento = 2,
+                    Almacenamiento = BitacoraAlmacenamiento.Archivo,
                     Nombre = txtBitacoraNombre.Text,
                     Ruta = txtBitacoraRuta.Text,
                     NombreArchivo = txtBitacoraNombreArchivo.Text,
@@ -132,6 +130,7 @@ namespace compass
             {
                 cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
                 limpiarControlesDeBitacoraBD();
+                limpiarControlesDeBitacoraArchivo();
                 optBitacoraAlmacenamiento1.Checked = true;
             }
         }
@@ -170,7 +169,7 @@ namespace compass
                 try
                 {
                     ambienteActual.GenerarArchivosINI();
-                    MessageBox.Show("Archivo TrinidadDb.ini generado con éxito.-", C_TITULO_MESSAGE_BOX, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Archivos INI generados con éxito.-", C_TITULO_MESSAGE_BOX, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
@@ -197,14 +196,45 @@ namespace compass
             }
         }
 
+        private void chkBitacoras_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void chkSeguridadIntegrada_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSeguridadIntegrada.Checked)
+            {
+                txtPassword.Text = "";
+                txtUsuarioAmbiente.Text = "";
+                txtPassword.Enabled = false;
+                txtUsuarioAmbiente.Enabled = false;
+                chkEncriptarPassword.Enabled = false;
+            }
+            else
+            {
+                txtPassword.Text = "";
+                txtUsuarioAmbiente.Text = "";
+                txtPassword.Enabled = true;
+                txtUsuarioAmbiente.Enabled = true;
+                chkEncriptarPassword.Enabled = true;
+            }
+        }
+
         private void cmbBitacorasRegistradas_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!cargaEnProgreso)
             {
-                if (listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex].Almacenamiento == 1)
-                    mostrarBitacora((BitacoraBaseDeDatos)listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex]);
-                else
-                    mostrarBitacora((BitacoraArchivo)listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex]);
+                switch (listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex].Almacenamiento)
+                {
+                    case BitacoraAlmacenamiento.BaseDeDatos:
+                        mostrarBitacora((BitacoraBaseDeDatos)listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex]);
+                        break;
+                    case BitacoraAlmacenamiento.Archivo:
+                        mostrarBitacora((BitacoraArchivo)listaDeBitacoras[cmbBitacorasRegistradas.SelectedIndex]);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -241,30 +271,6 @@ namespace compass
                     modoEdicion = false;
                     configurarGUI();
                 }
-            }
-        }
-
-        private void chkBitacoras_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void chkSeguridadIntegrada_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSeguridadIntegrada.Checked)
-            {
-                txtPassword.Text = "";
-                txtUsuarioAmbiente.Text = "";
-                txtPassword.Enabled = false;
-                txtUsuarioAmbiente.Enabled = false;
-                chkEncriptarPassword.Enabled = false;
-            }
-            else
-            {
-                txtPassword.Text = "";
-                txtUsuarioAmbiente.Text = "";
-                txtPassword.Enabled = true;
-                txtUsuarioAmbiente.Enabled = true;
-                chkEncriptarPassword.Enabled = true;
             }
         }
 
@@ -423,6 +429,7 @@ namespace compass
             txtBitacoraRuta.Text = bitacora.Ruta;
             txtBitacoraNombreArchivo.Text = bitacora.NombreArchivo;
             txtBitacoraExtension.Text = bitacora.Extension;
+            txtBitacoraSeparador.Text = bitacora.Separador;
             nudBitacoraLimiteMB.Value = bitacora.Limite;
         }
 
@@ -446,7 +453,6 @@ namespace compass
                 btnBitacoraCancelar.Visible = false;
                 btnBitacoraAceptar.Text = "Actualizar";
                 txtBitacoraNombre.ReadOnly = true;
-                //fraBitacoraAlmacenamiento.Enabled = false;
                 lblBitacoraModo.Text = "Edición";
                 lblBitacoraModo.ForeColor = Color.CadetBlue;
             }
@@ -458,7 +464,6 @@ namespace compass
                 btnBitacoraCancelar.Visible = true;
                 btnBitacoraAceptar.Text = "Grabar";
                 txtBitacoraNombre.ReadOnly = false;
-                //fraBitacoraAlmacenamiento.Enabled = true;
                 lblBitacoraModo.Text = "Alta";
                 lblBitacoraModo.ForeColor = Color.Crimson;
                 optBitacoraAlmacenamiento1.Checked = true;

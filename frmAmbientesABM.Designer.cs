@@ -58,12 +58,6 @@
             tabPage1 = new TabPage();
             tabPage2 = new TabPage();
             lblBitacoraModo = new Label();
-            groupBox1 = new GroupBox();
-            txtBitacoraNombre = new TextBox();
-            btnBitacoraNueva = new Button();
-            btnBitacoraEliminar = new Button();
-            btnBitacoraCancelar = new Button();
-            btnBitacoraAceptar = new Button();
             fraBitacoraDatosAlmacenamiento1 = new GroupBox();
             txtBitacoraTabla = new TextBox();
             txtBitacoraBaseDeDatos = new TextBox();
@@ -77,6 +71,12 @@
             label16 = new Label();
             label15 = new Label();
             label14 = new Label();
+            groupBox1 = new GroupBox();
+            txtBitacoraNombre = new TextBox();
+            btnBitacoraNueva = new Button();
+            btnBitacoraEliminar = new Button();
+            btnBitacoraCancelar = new Button();
+            btnBitacoraAceptar = new Button();
             fraBitacoraDatosAlmacenamiento2 = new GroupBox();
             txtBitacoraSeparador = new TextBox();
             label13 = new Label();
@@ -98,8 +98,8 @@
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
-            groupBox1.SuspendLayout();
             fraBitacoraDatosAlmacenamiento1.SuspendLayout();
+            groupBox1.SuspendLayout();
             fraBitacoraDatosAlmacenamiento2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudBitacoraLimiteMB).BeginInit();
             fraBitacoraAlmacenamiento.SuspendLayout();
@@ -394,62 +394,6 @@
             lblBitacoraModo.Text = "label13";
             lblBitacoraModo.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(txtBitacoraNombre);
-            groupBox1.Location = new Point(16, 66);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(237, 57);
-            groupBox1.TabIndex = 3;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Nombre:";
-            // 
-            // txtBitacoraNombre
-            // 
-            txtBitacoraNombre.Location = new Point(6, 20);
-            txtBitacoraNombre.Name = "txtBitacoraNombre";
-            txtBitacoraNombre.Size = new Size(221, 23);
-            txtBitacoraNombre.TabIndex = 0;
-            // 
-            // btnBitacoraNueva
-            // 
-            btnBitacoraNueva.Location = new Point(567, 12);
-            btnBitacoraNueva.Name = "btnBitacoraNueva";
-            btnBitacoraNueva.Size = new Size(75, 23);
-            btnBitacoraNueva.TabIndex = 7;
-            btnBitacoraNueva.Text = "Nueva Bitácora....";
-            btnBitacoraNueva.UseVisualStyleBackColor = true;
-            btnBitacoraNueva.Click += btnBitacoraNueva_Click;
-            // 
-            // btnBitacoraEliminar
-            // 
-            btnBitacoraEliminar.Location = new Point(567, 71);
-            btnBitacoraEliminar.Name = "btnBitacoraEliminar";
-            btnBitacoraEliminar.Size = new Size(75, 23);
-            btnBitacoraEliminar.TabIndex = 9;
-            btnBitacoraEliminar.Text = "Eliminar";
-            btnBitacoraEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnBitacoraCancelar
-            // 
-            btnBitacoraCancelar.Location = new Point(567, 100);
-            btnBitacoraCancelar.Name = "btnBitacoraCancelar";
-            btnBitacoraCancelar.Size = new Size(75, 23);
-            btnBitacoraCancelar.TabIndex = 10;
-            btnBitacoraCancelar.Text = "Cancelar";
-            btnBitacoraCancelar.UseVisualStyleBackColor = true;
-            btnBitacoraCancelar.Click += btnBitacoraCancelar_Click;
-            // 
-            // btnBitacoraAceptar
-            // 
-            btnBitacoraAceptar.Location = new Point(567, 42);
-            btnBitacoraAceptar.Name = "btnBitacoraAceptar";
-            btnBitacoraAceptar.Size = new Size(75, 23);
-            btnBitacoraAceptar.TabIndex = 8;
-            btnBitacoraAceptar.Text = "Aceptar";
-            btnBitacoraAceptar.UseVisualStyleBackColor = true;
-            btnBitacoraAceptar.Click += btnBitacoraAceptar_Click;
-            // 
             // fraBitacoraDatosAlmacenamiento1
             // 
             fraBitacoraDatosAlmacenamiento1.Controls.Add(txtBitacoraTabla);
@@ -571,6 +515,63 @@
             label14.Size = new Size(53, 15);
             label14.TabIndex = 0;
             label14.Text = "Servidor:";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(txtBitacoraNombre);
+            groupBox1.Location = new Point(16, 66);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(237, 57);
+            groupBox1.TabIndex = 3;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Nombre:";
+            // 
+            // txtBitacoraNombre
+            // 
+            txtBitacoraNombre.Location = new Point(6, 20);
+            txtBitacoraNombre.Name = "txtBitacoraNombre";
+            txtBitacoraNombre.Size = new Size(221, 23);
+            txtBitacoraNombre.TabIndex = 0;
+            // 
+            // btnBitacoraNueva
+            // 
+            btnBitacoraNueva.Location = new Point(567, 12);
+            btnBitacoraNueva.Name = "btnBitacoraNueva";
+            btnBitacoraNueva.Size = new Size(75, 23);
+            btnBitacoraNueva.TabIndex = 7;
+            btnBitacoraNueva.Text = "Nueva Bitácora....";
+            btnBitacoraNueva.UseVisualStyleBackColor = true;
+            btnBitacoraNueva.Click += btnBitacoraNueva_Click;
+            // 
+            // btnBitacoraEliminar
+            // 
+            btnBitacoraEliminar.Enabled = false;
+            btnBitacoraEliminar.Location = new Point(567, 71);
+            btnBitacoraEliminar.Name = "btnBitacoraEliminar";
+            btnBitacoraEliminar.Size = new Size(75, 23);
+            btnBitacoraEliminar.TabIndex = 9;
+            btnBitacoraEliminar.Text = "Eliminar";
+            btnBitacoraEliminar.UseVisualStyleBackColor = true;
+            // 
+            // btnBitacoraCancelar
+            // 
+            btnBitacoraCancelar.Location = new Point(567, 100);
+            btnBitacoraCancelar.Name = "btnBitacoraCancelar";
+            btnBitacoraCancelar.Size = new Size(75, 23);
+            btnBitacoraCancelar.TabIndex = 10;
+            btnBitacoraCancelar.Text = "Cancelar";
+            btnBitacoraCancelar.UseVisualStyleBackColor = true;
+            btnBitacoraCancelar.Click += btnBitacoraCancelar_Click;
+            // 
+            // btnBitacoraAceptar
+            // 
+            btnBitacoraAceptar.Location = new Point(567, 42);
+            btnBitacoraAceptar.Name = "btnBitacoraAceptar";
+            btnBitacoraAceptar.Size = new Size(75, 23);
+            btnBitacoraAceptar.TabIndex = 8;
+            btnBitacoraAceptar.Text = "Aceptar";
+            btnBitacoraAceptar.UseVisualStyleBackColor = true;
+            btnBitacoraAceptar.Click += btnBitacoraAceptar_Click;
             // 
             // fraBitacoraDatosAlmacenamiento2
             // 
@@ -737,7 +738,6 @@
             cmbBitacorasRegistradas.Location = new Point(143, 26);
             cmbBitacorasRegistradas.Name = "cmbBitacorasRegistradas";
             cmbBitacorasRegistradas.Size = new Size(306, 23);
-            cmbBitacorasRegistradas.Sorted = true;
             cmbBitacorasRegistradas.TabIndex = 1;
             cmbBitacorasRegistradas.SelectedIndexChanged += cmbBitacorasRegistradas_SelectedIndexChanged;
             // 
@@ -765,10 +765,10 @@
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             fraBitacoraDatosAlmacenamiento1.ResumeLayout(false);
             fraBitacoraDatosAlmacenamiento1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             fraBitacoraDatosAlmacenamiento2.ResumeLayout(false);
             fraBitacoraDatosAlmacenamiento2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudBitacoraLimiteMB).EndInit();

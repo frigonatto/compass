@@ -8,7 +8,14 @@ namespace compass
 {
     public class Bitacora
     {
-        public int Almacenamiento { get; set; }
+        /// <summary>
+        /// Indica donde reside los datos de la bitácora.-
+        /// </summary>
+        public BitacoraAlmacenamiento Almacenamiento { get; set; }
+
+        /// <summary>
+        /// ´Nombre de la bitácora.-
+        /// </summary>
         public string Nombre { get; set; }
     }
 }

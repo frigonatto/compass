@@ -54,58 +54,14 @@ Ambiente.crearArchivoXML(...) para incluir la grabación de las bitácoras
 ==========
 12:15 a 13:00 limpieza de controles luego de hacer un alta de bitácora
 
+
+25-05-2025
+==========
+El 23/5 trabajé un poco pero no tomé control del tiempo.-
+11:30 a 12:30 - finalización de la grabación del archivo de bitacoras. Mejoras en usabilidad del formulario.-
+
+
 Para continuar:
 
-
-2) Generar archivos INI de bitacoras
 3) Leer un archivo que no tenga bien el formato y "contener" las excepciones
-
-
-                if (optBitacoraAlmacenamiento1.Checked)
-                {
-                    //base de datos
-                    string axUsuario = txtBitacoraUsuario.Text;
-                    string axPassword = txtBitacoraPassword.Text;
-
-                    if (chkSeguridadIntegrada.Checked)
-                    {
-                        axUsuario = "";
-                        axPassword = "";
-                    }
-
-                    BitacoraBaseDeDatos nuevaBitacora = new BitacoraBaseDeDatos
-                    {
-                        Almacenamiento = 1,
-                        Nombre = txtBitacoraNombre.Text,
-                        Servidor = txtBitacoraServidor.Text,
-                        BaseDeDatos = txtBitacoraBaseDeDatos.Text,
-                        Tabla = txtBitacoraTabla.Text,
-                        SeguridadIntegrada = chkSeguridadIntegrada.Checked,
-                        Usuario = axUsuario,
-                        Password = axPassword,
-                        EncriptarPassword = chkEncriptarPassword.Checked
-                    };
-
-                    listaDeBitacoras.Add(nuevaBitacora);
-                    cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
-                    limpiarControlesDeBitacoraBD();
-                    optBitacoraAlmacenamiento1.Checked = true;
-                }
-                else
-                {
-                    BitacoraArchivo nuevaBitacora = new BitacoraArchivo
-                    {
-                        Almacenamiento = 2,
-                        Nombre = txtBitacoraNombre.Text,
-                        Ruta = txtBitacoraRuta.Text,
-                        NombreArchivo = txtBitacoraNombreArchivo.Text,
-                        Extension = txtBitacoraExtension.Text,
-                        Separador = txtBitacoraSeparador.Text,
-                        Limite = System.Convert.ToInt32(nudBitacoraLimiteMB.Value),
-                    };
-
-                    listaDeBitacoras.Add(nuevaBitacora);
-                    cmbBitacorasRegistradas.Items.Add(nuevaBitacora.Nombre);
-                    limpiarControlesDeBitacoraArchivo();
-                }
-
+4) Validar los datos con propiedadesd de los controles
